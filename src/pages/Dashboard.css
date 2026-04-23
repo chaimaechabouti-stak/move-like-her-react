@@ -579,3 +579,61 @@
 
 @keyframes spin { to { transform: rotate(360deg); } }
 .dash-res-spin { animation: spin 0.8s linear infinite; }
+
+/* ── Notifications ── */
+.dash-notifs {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding-top: 1.5rem;
+  padding-bottom: 0;
+}
+
+.dash-notif {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 1.25rem;
+  border-radius: 14px;
+  border: 1px solid;
+  animation: notifSlide 0.4s ease both;
+}
+
+@keyframes notifSlide {
+  from { opacity: 0; transform: translateY(-10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.dash-notif--warn    { background: rgba(255,152,0,0.08);  border-color: rgba(255,152,0,0.25);  }
+.dash-notif--error   { background: rgba(211,47,47,0.08);  border-color: rgba(211,47,47,0.25);  }
+.dash-notif--info    { background: rgba(233,30,140,0.08); border-color: rgba(233,30,140,0.2);  }
+.dash-notif--success { background: rgba(56,142,60,0.08);  border-color: rgba(56,142,60,0.25);  }
+
+.dash-notif-icon { flex-shrink: 0; width: 38px; height: 38px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+.dash-notif-icon svg { width: 18px; height: 18px; }
+.dash-notif--warn    .dash-notif-icon { background: rgba(255,152,0,0.15);  color: #ff9800; }
+.dash-notif--error   .dash-notif-icon { background: rgba(211,47,47,0.15);  color: #ef5350; }
+.dash-notif--info    .dash-notif-icon { background: rgba(233,30,140,0.15); color: #e91e8c; }
+.dash-notif--success .dash-notif-icon { background: rgba(56,142,60,0.15);  color: #4caf50; }
+
+.dash-notif-body { flex: 1; display: flex; flex-direction: column; gap: 0.15rem; min-width: 0; }
+.dash-notif-title { font-size: 0.88rem; font-weight: 700; color: #f0e6ec; }
+.dash-notif-msg   { font-size: 0.78rem; color: #9a7a8a; line-height: 1.5; }
+
+.dash-notif-btn {
+  flex-shrink: 0;
+  padding: 0.45rem 1rem;
+  border-radius: 50px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-decoration: none;
+  background: rgba(233,30,140,0.15);
+  color: #e91e8c;
+  border: 1px solid rgba(233,30,140,0.3);
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+.dash-notif-btn:hover { background: #e91e8c; color: white; }
+
+[data-theme="light"] .dash-notif-title { color: #1a0a14; }
+[data-theme="light"] .dash-notif-msg   { color: #6b5060; }

@@ -99,8 +99,58 @@ export default function Dashboard() {
 
   const statutAbo = inscription ? (jours <= 7 ? 'warn' : 'active') : 'none'
 
+  /* Notifications intelligentes */
+  const notifications = [
+    inscription && jours <= 7 && jours > 0 && {
+      id: 'exp-soon', type: 'warn',
+      icon: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>,
+      title: 'Abonnement bientôt expiré',
+      msg: `Ton abonnement expire dans ${jours} jour${jours > 1 ? 's' : ''}. Renouvelle-le pour continuer.`,
+      action: { label: 'Renouveler', to: '/abonnements' }
+    },
+    inscription && jours === 0 && {
+      id: 'exp-today', type: 'error',
+      icon: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>,
+      title: 'Abonnement expiré',
+      msg: 'Ton abonnement a expiré. Souscris un nouvel abonnement pour accéder aux cours.',
+      action: { label: 'S\'abonner', to: '/abonnements' }
+    },
+    !inscription && {
+      id: 'no-abo', type: 'info',
+      icon: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 21 12 17.77 5.82 21 7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>,
+      title: 'Pas encore abonnée',
+      msg: 'Rejoins Move Like Her et accède à tous nos cours collectifs et coachs.',
+      action: { label: 'Voir les formules', to: '/abonnements' }
+    },
+    reservations.length > 0 && {
+      id: 'has-res', type: 'success',
+      icon: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="20 6 9 17 4 12"/></svg>,
+      title: `${reservations.length} cours réservé${reservations.length > 1 ? 's' : ''}`,
+      msg: 'Tes prochaines séances sont confirmées. Bonne séance !',
+      action: null
+    },
+  ].filter(Boolean)
+
   return (
     <div className={`dash-page ${mounted ? 'is-mounted' : ''}`}>
+
+      {/* ── NOTIFICATIONS ── */}
+      {notifications.length > 0 && (
+        <div className="dash-notifs container">
+          {notifications.map(n => (
+            <div key={n.id} className={`dash-notif dash-notif--${n.type}`}>
+              <div className="dash-notif-icon">{n.icon}</div>
+              <div className="dash-notif-body">
+                <span className="dash-notif-title">{n.title}</span>
+                <span className="dash-notif-msg">{n.msg}</span>
+              </div>
+              {n.action && (
+                <Link to={n.action.to} className="dash-notif-btn">{n.action.label}</Link>
+              )}
+            </div>
+          ))}
+        </div>
+      )}
 
       {/* ── HERO ── */}
       <div className="dash-hero">
