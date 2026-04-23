@@ -304,6 +304,11 @@
   .nav-logo-text .logo-sub { display: none; }
 }
 
+/* Install button */
+.nav-install-btn { display: flex; align-items: center; gap: 6px; padding: 7px 14px; border-radius: 20px; background: rgba(233,30,140,0.2); border: 1px solid rgba(233,30,140,0.5); color: #e91e8c; font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.2s; flex-shrink: 0; }
+.nav-install-btn svg { width: 15px; height: 15px; }
+.nav-install-btn:hover { background: #e91e8c; color: white; border-color: #e91e8c; }
+
 /* Theme toggle */
 .nav-theme-toggle { display: flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 50%; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.15); color: rgba(255,255,255,0.8); cursor: pointer; transition: all 0.2s; flex-shrink: 0; }
 .nav-theme-toggle svg { width: 16px; height: 16px; }
