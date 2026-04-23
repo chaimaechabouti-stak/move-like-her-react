@@ -33,6 +33,7 @@ export default function CoursCollectifs() {
   const { user } = useAuth()
   const navigate = useNavigate()
   const [active, setActive] = useState('Tous')
+  const [search, setSearch] = useState('')
   const [courses, setCourses] = useState([])
   const [loadingCours, setLoadingCours] = useState(true)
   const [hasAbonnement, setHasAbonnement] = useState(false)
@@ -89,7 +90,9 @@ export default function CoursCollectifs() {
     }
   }
 
-  const filtered = active === 'Tous' ? courses : courses.filter(c => categoryMap[c.slug] === active || categoryMap[c.id] === active)
+  const filtered = courses
+    .filter(c => active === 'Tous' || categoryMap[c.slug] === active || categoryMap[c.id] === active)
+    .filter(c => !search || (c.title || c.nom || '').toLowerCase().includes(search.toLowerCase()) || (c.description || '').toLowerCase().includes(search.toLowerCase()))
 
   return (
     <main className="page-cours">
@@ -136,6 +139,21 @@ export default function CoursCollectifs() {
             ))}
           </div>
 
+          {/* Recherche */}
+          <div className="cours-search-wrap">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35" strokeLinecap="round"/></svg>
+            <input
+              className="cours-search-input"
+              type="text"
+              placeholder="Rechercher un cours…"
+              value={search}
+              onChange={e => setSearch(e.target.value)}
+            />
+            {search && (
+              <button className="cours-search-clear" onClick={() => setSearch('')}>×</button>
+            )}
+          </div>
+
           {/* Grille de cartes */}
           <div className="courses-grid-v2">
             {loadingCours
@@ -143,7 +161,7 @@ export default function CoursCollectifs() {
               : filtered.map(c => (
               <div key={c.id} className="course-card-v2">
                 <div className="ccv2-img-wrap">
-                  <div className="ccv2-img" style={{ backgroundImage: `url(${c.image})` }} />
+                  <div className="ccv2-img" style={{ backgroundImage: `url(${c.img || c.image_url})` }} />
                   <div className="ccv2-img-overlay" style={{ background: `linear-gradient(to top, ${c.color}e0 0%, ${c.color}60 40%, transparent 70%)` }} />
                   <div className="ccv2-badges">
                     <span className="ccv2-badge">
@@ -159,8 +177,8 @@ export default function CoursCollectifs() {
                 </div>
                 <div className="ccv2-body">
                   <div className="ccv2-accent" style={{ background: c.color }} />
-                  <h3 className="ccv2-name">{c.name}</h3>
-                  <p className="ccv2-desc">{c.description}</p>
+                  <h3 className="ccv2-name">{c.title}</h3>
+                  <p className="ccv2-desc">{c.desc}</p>
                   <button
                     className={`ccv2-btn ${reserved.has(c.id) ? 'ccv2-btn--done' : ''}`}
                     style={{ color: reserved.has(c.id) ? '#fff' : c.color, borderColor: `${c.color}40`, background: reserved.has(c.id) ? c.color : 'transparent' }}
