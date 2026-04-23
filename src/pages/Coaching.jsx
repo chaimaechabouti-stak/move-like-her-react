@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { coaches as coachesApi } from '../services/api'
+import { SkeletonGrid } from '../components/Skeleton'
 import './Coaching.css'
 
 const coachingTypes = [
@@ -128,6 +129,7 @@ const testimonials = [
 
 export default function Coaching() {
   const [team, setTeam] = useState([])
+  const [loadingTeam, setLoadingTeam] = useState(true)
 
   useEffect(() => {
     coachesApi.list().then(data => {
@@ -143,7 +145,7 @@ export default function Coaching() {
         img:     c.photo_url || '',
         color:   '#e91e8c',
       })))
-    }).catch(() => {})
+    }).catch(() => {}).finally(() => setLoadingTeam(false))
   }, [])
 
   return (
@@ -245,7 +247,9 @@ export default function Coaching() {
             <p className="team-header-sub">Certifiées, expérimentées et surtout — elles t'attendent avec le sourire.</p>
           </div>
           <div className="team-grid-v2">
-            {team.map(m => (
+            {loadingTeam
+              ? <SkeletonGrid count={4} height={380} />
+              : team.map(m => (
               <div key={m.id || m.name} className="team-card-v2">
                 <div className="tcv2-photo-wrap">
                   {m.img

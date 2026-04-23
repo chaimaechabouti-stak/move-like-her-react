@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { salles as sallesApi } from '../services/api'
+import { SkeletonGrid } from '../components/Skeleton'
 import './Salles.css'
 
 /* OpenStreetMap embed URL pour une salle */
@@ -52,6 +53,7 @@ export default function Salles() {
   const [salles, setSalles]     = useState([])
   const [activeCity, setActiveCity] = useState('Toutes')
   const [activeMap, setActiveMap]   = useState(null)
+  const [loadingSalles, setLoadingSalles] = useState(true)
 
   useEffect(() => {
     sallesApi.list().then(data => {
@@ -59,7 +61,7 @@ export default function Salles() {
       const mapped = arr.map(toSalle)
       setSalles(mapped)
       if (mapped.length) setActiveMap(mapped[0])
-    }).catch(() => {})
+    }).catch(() => {}).finally(() => setLoadingSalles(false))
   }, [])
 
   const cities   = ['Toutes', ...new Set(salles.map(s => s.city))]
@@ -114,7 +116,9 @@ export default function Salles() {
 
           {/* Grille */}
           <div className="salles-grid">
-            {filtered.map(s => (
+            {loadingSalles
+              ? <SkeletonGrid count={6} height={320} />
+              : filtered.map(s => (
               <div key={s.id} className="salle-card">
                 <div className="salle-img-wrap">
                   <div className="salle-img" style={{ backgroundImage: `url(${s.image})` }} />

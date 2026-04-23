@@ -1,0 +1,88 @@
+/* ════════════════════════════════════════ SKELETON */
+@keyframes shimmer {
+  0%   { background-position: -600px 0; }
+  100% { background-position: 600px 0; }
+}
+
+.sk-shimmer {
+  background: linear-gradient(90deg, #f0e0ea 25%, #fce4ec 50%, #f0e0ea 75%);
+  background-size: 600px 100%;
+  animation: shimmer 1.4s infinite linear;
+  border-radius: 8px;
+}
+
+/* Grid */
+.sk-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.5rem;
+}
+
+/* Card */
+.sk-card {
+  border-radius: 20px;
+  overflow: hidden;
+  background: #fff;
+  border: 1px solid #fce4ec;
+  box-shadow: 0 2px 12px rgba(233,30,140,0.06);
+}
+
+.sk-img {
+  height: 55%;
+  background: linear-gradient(90deg, #f0e0ea 25%, #fce4ec 50%, #f0e0ea 75%);
+  background-size: 600px 100%;
+  animation: shimmer 1.4s infinite linear;
+}
+
+.sk-body {
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.sk-line {
+  height: 12px;
+  border-radius: 6px;
+  background: linear-gradient(90deg, #f0e0ea 25%, #fce4ec 50%, #f0e0ea 75%);
+  background-size: 600px 100%;
+  animation: shimmer 1.4s infinite linear;
+}
+
+.sk-w80 { width: 80%; }
+.sk-w70 { width: 70%; }
+.sk-w60 { width: 60%; }
+.sk-w50 { width: 50%; }
+.sk-w40 { width: 40%; }
+.sk-center { margin: 0 auto; }
+
+.sk-btn {
+  height: 40px;
+  border-radius: 50px;
+  margin-top: 0.5rem;
+  background: linear-gradient(90deg, #f0e0ea 25%, #fce4ec 50%, #f0e0ea 75%);
+  background-size: 600px 100%;
+  animation: shimmer 1.4s infinite linear;
+}
+
+/* Plan card */
+.sk-plan {
+  border-radius: 20px;
+  padding: 2rem;
+  background: #fff;
+  border: 1px solid #fce4ec;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  min-height: 380px;
+}
+
+.sk-price {
+  height: 48px;
+  width: 60%;
+  margin: 0 auto;
+  border-radius: 10px;
+  background: linear-gradient(90deg, #f0e0ea 25%, #fce4ec 50%, #f0e0ea 75%);
+  background-size: 600px 100%;
+  animation: shimmer 1.4s infinite linear;
+}

@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { cours as coursApi, abonnements as abosApi, reservations as resApi } from '../services/api'
 import { useAuth } from '../context/AuthContext'
+import { SkeletonGrid } from '../components/Skeleton'
 import './CoursCollectifs.css'
 
 const filters = [
@@ -33,6 +34,7 @@ export default function CoursCollectifs() {
   const navigate = useNavigate()
   const [active, setActive] = useState('Tous')
   const [courses, setCourses] = useState([])
+  const [loadingCours, setLoadingCours] = useState(true)
   const [hasAbonnement, setHasAbonnement] = useState(false)
   const [reserving, setReserving] = useState(null)
   const [reserved, setReserved] = useState(new Set())
@@ -50,7 +52,7 @@ export default function CoursCollectifs() {
         color:    c.couleur  || c.color    || '#e91e8c',
         img:      c.image_url || c.img     || '',
       })))
-    }).catch(() => {})
+    }).catch(() => {}).finally(() => setLoadingCours(false))
   }, [])
 
   useEffect(() => {
@@ -136,7 +138,9 @@ export default function CoursCollectifs() {
 
           {/* Grille de cartes */}
           <div className="courses-grid-v2">
-            {filtered.map(c => (
+            {loadingCours
+              ? <SkeletonGrid count={6} height={340} />
+              : filtered.map(c => (
               <div key={c.id} className="course-card-v2">
                 <div className="ccv2-img-wrap">
                   <div className="ccv2-img" style={{ backgroundImage: `url(${c.image})` }} />
