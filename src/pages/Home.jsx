@@ -259,6 +259,22 @@ export default function Home() {
   const [activeSalle, setActiveSalle] = useState(0)
   const [searchQuery, setSearchQuery] = useState('')
   const [searchFocus, setSearchFocus] = useState(false)
+  const [annuel, setAnnuel] = useState(false)
+  const [formData, setFormData] = useState({ prenom: '', name: '', email: '', telephone: '', ville: 'Casablanca', formule: 'decouverte' })
+  const [formSent, setFormSent] = useState(false)
+  const [formSending, setFormSending] = useState(false)
+
+  function handleFormChange(e) {
+    setFormData(f => ({ ...f, [e.target.name]: e.target.value }))
+  }
+
+  async function handleFormSubmit(e) {
+    e.preventDefault()
+    setFormSending(true)
+    await new Promise(r => setTimeout(r, 1000))
+    setFormSent(true)
+    setFormSending(false)
+  }
   const featuredCourses = courses.slice(0, 3)
   // 3 cours mis en avant sur la homepage
 
@@ -738,12 +754,12 @@ export default function Home() {
 
               {/* Toggle mensuel / annuel */}
               <div className="psv2-toggle-wrap">
-                <span className="psv2-toggle-label">Mensuel</span>
+                <span className={`psv2-toggle-label ${!annuel ? 'psv2-toggle-label--active' : ''}`}>Mensuel</span>
                 <label className="psv2-toggle">
-                  <input type="checkbox" id="annuel-toggle" />
+                  <input type="checkbox" checked={annuel} onChange={e => setAnnuel(e.target.checked)} />
                   <span className="psv2-toggle-slider" />
                 </label>
-                <span className="psv2-toggle-label">
+                <span className={`psv2-toggle-label ${annuel ? 'psv2-toggle-label--active' : ''}`}>
                   Annuel
                   <span className="psv2-saving-badge">-20%</span>
                 </span>
@@ -788,12 +804,13 @@ export default function Home() {
                   {/* Prix */}
                   <div className="psv2-price-block">
                     <div className="psv2-price">
-                      <span className="psv2-amount">{p.price}</span>
+                      <span className="psv2-amount">{annuel ? Math.round(p.price * 0.8) : p.price}</span>
                       <div className="psv2-currency">
                         <span>Dh</span>
                         <span>/ mois</span>
                       </div>
                     </div>
+                    {annuel && <div className="psv2-annual-note">Facturé {Math.round(p.price * 0.8 * 12)} Dh/an</div>}
                     {p.badge && (
                       <div className="psv2-badge">{p.badge}</div>
                     )}
@@ -927,53 +944,61 @@ export default function Home() {
                 ))}
               </ul>
             </div>
-            <form className="inscri-form">
-              <div className="form-row">
-                <div className="form-group">
-                  <label>Prénom</label>
-                  <input type="text" placeholder="Ton prénom" />
+            {formSent ? (
+              <div className="inscri-success">
+                <div className="inscri-success-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polyline points="20 6 9 17 4 12"/></svg>
                 </div>
-                <div className="form-group">
-                  <label>Nom</label>
-                  <input type="text" placeholder="Ton nom" />
-                </div>
+                <h3>Demande envoyée !</h3>
+                <p>Notre équipe te contacte sous 24h pour finaliser ton inscription. Bienvenue dans la communauté Move Like Her 💪</p>
+                <button className="btn-primary" onClick={() => { setFormSent(false); setFormData({ prenom: '', name: '', email: '', telephone: '', ville: 'Casablanca', formule: 'decouverte' }) }}>
+                  Nouvelle demande
+                </button>
               </div>
-              <div className="form-row">
-                <div className="form-group">
-                  <label>Email</label>
-                  <input type="email" placeholder="ton@email.com" />
+            ) : (
+              <form className="inscri-form" onSubmit={handleFormSubmit}>
+                <div className="form-row">
+                  <div className="form-group">
+                    <label>Prénom</label>
+                    <input type="text" name="prenom" value={formData.prenom} onChange={handleFormChange} placeholder="Ton prénom" required />
+                  </div>
+                  <div className="form-group">
+                    <label>Nom</label>
+                    <input type="text" name="name" value={formData.name} onChange={handleFormChange} placeholder="Ton nom" required />
+                  </div>
                 </div>
-                <div className="form-group">
-                  <label>Téléphone</label>
-                  <input type="tel" placeholder="+212 6XX XX XX XX" />
+                <div className="form-row">
+                  <div className="form-group">
+                    <label>Email</label>
+                    <input type="email" name="email" value={formData.email} onChange={handleFormChange} placeholder="ton@email.com" required />
+                  </div>
+                  <div className="form-group">
+                    <label>Téléphone</label>
+                    <input type="tel" name="telephone" value={formData.telephone} onChange={handleFormChange} placeholder="+212 6XX XX XX XX" />
+                  </div>
                 </div>
-              </div>
-              <div className="form-row">
-                <div className="form-group">
-                  <label>Ville</label>
-                  <select>
-                    <option>Casablanca</option>
-                    <option>Rabat</option>
-                    <option>Marrakech</option>
-                    <option>Fès</option>
-                    <option>Tanger</option>
-                    <option>Agadir</option>
-                  </select>
+                <div className="form-row">
+                  <div className="form-group">
+                    <label>Ville</label>
+                    <select name="ville" value={formData.ville} onChange={handleFormChange}>
+                      {['Casablanca','Rabat','Marrakech','Fès','Tanger','Agadir'].map(v => <option key={v}>{v}</option>)}
+                    </select>
+                  </div>
+                  <div className="form-group">
+                    <label>Formule choisie</label>
+                    <select name="formule" value={formData.formule} onChange={handleFormChange}>
+                      <option value="decouverte">Découverte — 500 Dh/mois</option>
+                      <option value="premium">Premium — 750 Dh/mois</option>
+                      <option value="elite">Elite — 1100 Dh/mois</option>
+                    </select>
+                  </div>
                 </div>
-                <div className="form-group">
-                  <label>Formule choisie</label>
-                  <select>
-                    <option>Découverte — 500 Dh/mois</option>
-                    <option>Premium — 750 Dh/mois</option>
-                    <option>Elite — 1100 Dh/mois</option>
-                  </select>
-                </div>
-              </div>
-              <button type="submit" className="btn-primary form-submit">
-                Envoyer ma demande
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M5 12h14M12 5l7 7-7 7" strokeLinecap="round" strokeLinejoin="round"/></svg>
-              </button>
-            </form>
+                <button type="submit" className="btn-primary form-submit" disabled={formSending}>
+                  {formSending ? 'Envoi en cours…' : 'Envoyer ma demande'}
+                  {!formSending && <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M5 12h14M12 5l7 7-7 7" strokeLinecap="round" strokeLinejoin="round"/></svg>}
+                </button>
+              </form>
+            )}
           </div>
         </div>
       </section>

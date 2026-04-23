@@ -2557,3 +2557,16 @@
   .ticker-bar { display: none; }
   .htb-line-1 { letter-spacing: -1px; }
 }
+
+/* Toggle label actif */
+.psv2-toggle-label--active { color: #1a0a14; font-weight: 700; }
+
+/* Prix annuel note */
+.psv2-annual-note { font-size: 0.72rem; color: var(--pink-500); font-weight: 600; margin-top: 0.25rem; }
+
+/* Succès formulaire */
+.inscri-success { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1.25rem; text-align: center; padding: 3rem 2rem; }
+.inscri-success-icon { width: 72px; height: 72px; border-radius: 50%; background: linear-gradient(135deg, #e91e8c, #c2185b); display: flex; align-items: center; justify-content: center; box-shadow: 0 8px 30px rgba(233,30,140,0.4); }
+.inscri-success-icon svg { width: 32px; height: 32px; stroke: white; }
+.inscri-success h3 { font-size: 1.5rem; font-weight: 900; color: white; margin: 0; }
+.inscri-success p { font-size: 0.9rem; color: rgba(255,255,255,0.6); line-height: 1.75; max-width: 380px; margin: 0; }
