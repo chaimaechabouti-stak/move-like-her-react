@@ -349,6 +349,24 @@ button {
 [data-theme="dark"] .hstat-label { color: #9a7a8a !important; }
 [data-theme="dark"] .htest-author { color: #9a7a8a !important; }
 
+/* ── Hero light mode — fond rose clair ── */
+[data-theme="light"] .hero { background: #fce4ec !important; }
+[data-theme="light"] .hero-anim-gradient {
+  background:
+    radial-gradient(ellipse 80% 60% at 20% 40%, rgba(233,30,140,0.25) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 80% at 80% 60%, rgba(194,24,91,0.18) 0%, transparent 55%),
+    radial-gradient(ellipse 100% 100% at 50% 100%, rgba(252,228,236,0.6) 0%, transparent 60%) !important;
+}
+[data-theme="light"] .hero-title-big { color: white !important; }
+[data-theme="light"] .hero-tagline { color: rgba(80,20,50,0.75) !important; }
+[data-theme="light"] .hero-top-badge { background: rgba(255,255,255,0.5) !important; color: #c2185b !important; border-color: rgba(233,30,140,0.3) !important; }
+[data-theme="light"] .hero-search-box { background: rgba(255,255,255,0.85) !important; border-color: rgba(233,30,140,0.25) !important; }
+[data-theme="light"] .hero-search-box input { color: #1a0a14 !important; }
+[data-theme="light"] .hero-search-box input::placeholder { color: rgba(100,40,70,0.5) !important; }
+[data-theme="light"] .hero-city-pill { background: rgba(255,255,255,0.6) !important; color: #c2185b !important; border-color: rgba(233,30,140,0.25) !important; }
+[data-theme="light"] .hero-grid-lines { opacity: 0.15 !important; }
+[data-theme="light"] .hero-bg-text span { color: rgba(233,30,140,0.08) !important; }
+
 /* ── Profil ── */
 [data-theme="dark"] .profil-page { background: #0f0c12 !important; }
 [data-theme="dark"] .profil-field label { color: #9a7a8a !important; }
