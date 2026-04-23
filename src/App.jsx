@@ -13,6 +13,7 @@ import Login from './pages/Login'
 import Register from './pages/Register'
 import Dashboard from './pages/Dashboard'
 import DashboardCoach from './pages/DashboardCoach'
+import Profil from './pages/Profil'
 import PaiementSucces from './pages/PaiementSucces'
 import NotFound from './pages/NotFound'
 
@@ -69,6 +70,7 @@ function AppRoutes() {
         <Route path="/login"            element={<Login />} />
         <Route path="/register"         element={<Register />} />
         <Route path="/dashboard"        element={<DashboardRouter />} />
+        <Route path="/profil"           element={<Profil />} />
 
         {/* Admin — layout imbriqué */}
         <Route path="/admin" element={<RequireAdmin><AdminLayout /></RequireAdmin>}>

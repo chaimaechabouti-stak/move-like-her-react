@@ -46,10 +46,11 @@ const del  = (path)        => request('DELETE', path)
 
 // ─── Auth ────────────────────────────────────────────────────────
 export const auth = {
-  register: (data)  => post('/register', data),
-  login:    (data)  => post('/login',    data),
-  logout:   ()      => post('/logout'),
-  me:       ()      => get('/me'),
+  register:      (data)  => post('/register', data),
+  login:         (data)  => post('/login',    data),
+  logout:        ()      => post('/logout'),
+  me:            ()      => get('/me'),
+  updateProfil:  (data)  => request('PUT', '/profil', data),
 }
 
 // ─── Salles ──────────────────────────────────────────────────────

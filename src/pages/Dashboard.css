@@ -237,7 +237,11 @@
   padding: 20px 24px 16px;
   border-bottom: 1px solid #fce4f0;
   background: linear-gradient(90deg, rgba(233,30,140,.03), transparent);
+  display: flex; align-items: center; justify-content: space-between;
 }
+.dash-edit-btn { display: inline-flex; align-items: center; gap: 0.35rem; font-size: 0.75rem; font-weight: 700; color: #e91e8c; background: rgba(233,30,140,0.08); border: 1px solid rgba(233,30,140,0.2); border-radius: 50px; padding: 0.35rem 0.85rem; text-decoration: none; transition: all 0.2s; }
+.dash-edit-btn svg { width: 12px; height: 12px; }
+.dash-edit-btn:hover { background: #e91e8c; color: white; }
 .dash-card-title {
   margin: 0; font-size: .95rem; font-weight: 800; color: #2d1a24;
   display: flex; align-items: center; gap: 9px;
