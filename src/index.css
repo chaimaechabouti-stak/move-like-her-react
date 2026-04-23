@@ -157,36 +157,205 @@ button {
   margin-bottom: 1rem;
 }
 
-/* ── Dark mode overrides ── */
+/* ══════════════════════════════════════════════════════
+   DARK MODE — couverture complète du site
+   ══════════════════════════════════════════════════════ */
+[data-theme="dark"] body { background: #0f0c12 !important; color: #f0e6ec !important; }
+
+/* ── Backgrounds clairs → sombres ── */
+[data-theme="dark"] .cours-body,
+[data-theme="dark"] .salles-body,
+[data-theme="dark"] .services-section,
+[data-theme="dark"] .planning-section,
+[data-theme="dark"] .coaching-section,
+[data-theme="dark"] .contact-body,
+[data-theme="dark"] .abos-plans-section,
+[data-theme="dark"] .concept-body,
+[data-theme="dark"] .home-features-section,
+[data-theme="dark"] .home-stats-section,
+[data-theme="dark"] .home-testimonials,
+[data-theme="dark"] .home-cours-section,
+[data-theme="dark"] .home-coaches-section,
+[data-theme="dark"] .footer-v2,
+[data-theme="dark"] .fv2-main { background: #0f0c12 !important; }
+
+/* ── Cartes blanches ── */
 [data-theme="dark"] .course-card-v2,
 [data-theme="dark"] .salle-card,
 [data-theme="dark"] .service-card,
 [data-theme="dark"] .profil-card,
 [data-theme="dark"] .dash-card,
 [data-theme="dark"] .planning-day,
-[data-theme="dark"] .adm-section,
-[data-theme="dark"] .adm-table-wrap { background: #1e1520 !important; border-color: rgba(233,30,140,0.15) !important; }
+[data-theme="dark"] .plan-card-full,
+[data-theme="dark"] .coaching-card,
+[data-theme="dark"] .team-card-v2,
+[data-theme="dark"] .contact-form-card,
+[data-theme="dark"] .auth-card,
+[data-theme="dark"] .home-cours-card,
+[data-theme="dark"] .hcoach-card,
+[data-theme="dark"] .htest-card,
+[data-theme="dark"] .dash-plan-card,
+[data-theme="dark"] .dash-prof-row,
+[data-theme="dark"] .cmw-step { background: #1a1420 !important; border-color: rgba(233,30,140,0.15) !important; }
 
+/* ── Fond gris clair des pages ── */
+[data-theme="dark"] .dash-page,
+[data-theme="dark"] .page-salles,
+[data-theme="dark"] .page-cours,
+[data-theme="dark"] .page-coaching { background: #0f0c12 !important; }
+
+/* ── Textes foncés → clairs ── */
+[data-theme="dark"] .section-title,
 [data-theme="dark"] .ccv2-name,
 [data-theme="dark"] .salle-name,
 [data-theme="dark"] .dash-card-title,
-[data-theme="dark"] .profil-card-head h2 { color: #f0e6ec !important; }
+[data-theme="dark"] .profil-card-head h2,
+[data-theme="dark"] .plan-name-full,
+[data-theme="dark"] .tcv2-name,
+[data-theme="dark"] .coa-title,
+[data-theme="dark"] .cmw-step-title,
+[data-theme="dark"] .cmw-title,
+[data-theme="dark"] .fs-header .section-title,
+[data-theme="dark"] .hf-title,
+[data-theme="dark"] .home-cours-name,
+[data-theme="dark"] .hcoach-name,
+[data-theme="dark"] .htest-text,
+[data-theme="dark"] .dash-hero-name,
+[data-theme="dark"] .auth-title,
+[data-theme="dark"] .service-card h3 { color: #f0e6ec !important; }
 
+/* ── Textes gris → plus clairs ── */
 [data-theme="dark"] .ccv2-desc,
 [data-theme="dark"] .salle-address,
 [data-theme="dark"] .slot-name,
-[data-theme="dark"] .slot-time { color: #b89aaa !important; }
+[data-theme="dark"] .slot-time,
+[data-theme="dark"] .section-subtitle,
+[data-theme="dark"] .plan-feat-item,
+[data-theme="dark"] .tcv2-spec,
+[data-theme="dark"] .coa-desc,
+[data-theme="dark"] .cmw-step-desc,
+[data-theme="dark"] .home-cours-desc,
+[data-theme="dark"] .hcoach-spec,
+[data-theme="dark"] .service-card p,
+[data-theme="dark"] .auth-subtitle,
+[data-theme="dark"] .fv2-col-desc,
+[data-theme="dark"] .fv2-link { color: #9a7a8a !important; }
 
-[data-theme="dark"] .cours-body,
-[data-theme="dark"] .salles-body,
-[data-theme="dark"] .services-section,
-[data-theme="dark"] .planning-section { background: #121016 !important; }
+/* ── Tag pills ── */
+[data-theme="dark"] .tag { background: #2a1225 !important; color: #f48fb1 !important; }
 
-[data-theme="dark"] .section-title { color: #f0e6ec !important; }
-[data-theme="dark"] .tag { background: #2a1225 !important; }
+/* ── Filtres/boutons blancs ── */
+[data-theme="dark"] .cours-filter-btn,
+[data-theme="dark"] .salles-filter-btn { background: #1a1420 !important; color: #d0a8be !important; border-color: rgba(233,30,140,0.2) !important; }
+[data-theme="dark"] .cours-filter-btn.active,
+[data-theme="dark"] .salles-filter-btn.active { background: #e91e8c !important; color: white !important; }
 
-[data-theme="dark"] .profil-field input { background: #1e1520 !important; border-color: rgba(233,30,140,0.25) !important; color: #f0e6ec !important; }
+/* ── Search input ── */
+[data-theme="dark"] .cours-search-input { background: #1a1420 !important; border-color: rgba(233,30,140,0.25) !important; color: #f0e6ec !important; }
 
-[data-theme="dark"] .adm-table th { background: #2a1225 !important; }
-[data-theme="dark"] .adm-table td { border-color: rgba(233,30,140,0.1) !important; color: #d0b8c8 !important; }
+/* ── Formulaires ── */
+[data-theme="dark"] .profil-field input,
+[data-theme="dark"] .auth-input,
+[data-theme="dark"] .contact-input,
+[data-theme="dark"] .contact-textarea,
+[data-theme="dark"] .adm-input,
+[data-theme="dark"] .adm-select,
+[data-theme="dark"] .adm-filter-select,
+[data-theme="dark"] .adm-search input { background: #1a1420 !important; border-color: rgba(233,30,140,0.25) !important; color: #f0e6ec !important; }
+
+/* ── Admin ── */
+[data-theme="dark"] .adm-layout { background: #0f0c12 !important; }
+[data-theme="dark"] .adm-sidebar { background: #130e18 !important; border-color: rgba(233,30,140,0.12) !important; }
+[data-theme="dark"] .adm-section,
+[data-theme="dark"] .adm-table-wrap,
+[data-theme="dark"] .adm-stat-card,
+[data-theme="dark"] .adm-form-card { background: #1a1420 !important; border-color: rgba(233,30,140,0.12) !important; }
+[data-theme="dark"] .adm-page-title,
+[data-theme="dark"] .adm-section-title,
+[data-theme="dark"] .adm-stat-val { color: #f0e6ec !important; }
+[data-theme="dark"] .adm-page-sub,
+[data-theme="dark"] .adm-stat-label { color: #9a7a8a !important; }
+[data-theme="dark"] .adm-table thead tr { background: #2a1225 !important; }
+[data-theme="dark"] .adm-table th { color: #f0e6ec !important; background: #2a1225 !important; }
+[data-theme="dark"] .adm-table td { border-color: rgba(233,30,140,0.08) !important; color: #d0b8c8 !important; }
 [data-theme="dark"] .adm-table tr:hover td { background: rgba(233,30,140,0.06) !important; }
+[data-theme="dark"] .adm-nav-item { color: #9a7a8a !important; }
+[data-theme="dark"] .adm-nav-item.active,
+[data-theme="dark"] .adm-nav-item:hover { background: rgba(233,30,140,0.12) !important; color: #f48fb1 !important; }
+[data-theme="dark"] .adm-search { background: #1a1420 !important; border-color: rgba(233,30,140,0.2) !important; }
+
+/* ── Dashboard ── */
+[data-theme="dark"] .dash-hero { background: linear-gradient(135deg, #1a0a14 0%, #2d1424 100%) !important; }
+[data-theme="dark"] .dash-stat-card { background: #1a1420 !important; border-color: rgba(233,30,140,0.15) !important; }
+[data-theme="dark"] .dash-stat-val,
+[data-theme="dark"] .dash-stat-label { color: #f0e6ec !important; }
+[data-theme="dark"] .dash-prof-lbl { color: #9a7a8a !important; }
+[data-theme="dark"] .dash-prof-val { color: #f0e6ec !important; }
+[data-theme="dark"] .dash-res-card { background: #1a1420 !important; border-color: rgba(233,30,140,0.15) !important; }
+[data-theme="dark"] .dash-res-name,
+[data-theme="dark"] .dash-res-info span { color: #f0e6ec !important; }
+
+/* ── Abonnements ── */
+[data-theme="dark"] .plan-feat-item { color: #9a7a8a !important; }
+[data-theme="dark"] .plan-card-full { background: #1a1420 !important; }
+[data-theme="dark"] .plan-card-full.highlight { background: linear-gradient(145deg, #2a0a20, #1a0a14) !important; }
+[data-theme="dark"] .abos-toggle-wrap { background: #1a1420 !important; border-color: rgba(233,30,140,0.2) !important; }
+[data-theme="dark"] .abos-toggle-label { color: #9a7a8a !important; }
+[data-theme="dark"] .abos-toggle-label.active { color: #f0e6ec !important; }
+[data-theme="dark"] .cmw-section { background: #0f0c12 !important; }
+[data-theme="dark"] .cmw-steps::before { background: rgba(233,30,140,0.2) !important; }
+
+/* ── Footer ── */
+[data-theme="dark"] .fv2-bottom { background: #080610 !important; border-color: rgba(233,30,140,0.1) !important; }
+[data-theme="dark"] .fv2-copy,
+[data-theme="dark"] .fv2-bottom-links a { color: #6a4a5a !important; }
+[data-theme="dark"] .fv2-col-title { color: #f0e6ec !important; }
+[data-theme="dark"] .fv2-divider { background: rgba(233,30,140,0.12) !important; }
+
+/* ── Login / Register ── */
+[data-theme="dark"] .auth-page { background: #0f0c12 !important; }
+[data-theme="dark"] .auth-label { color: #9a7a8a !important; }
+[data-theme="dark"] .auth-input-wrap { background: #1a1420 !important; border-color: rgba(233,30,140,0.2) !important; }
+[data-theme="dark"] .auth-switch { color: #9a7a8a !important; }
+
+/* ── Contact ── */
+[data-theme="dark"] .contact-label { color: #9a7a8a !important; }
+[data-theme="dark"] .contact-info-card { background: #1a1420 !important; border-color: rgba(233,30,140,0.15) !important; }
+[data-theme="dark"] .contact-info-title { color: #f0e6ec !important; }
+[data-theme="dark"] .contact-info-text { color: #9a7a8a !important; }
+
+/* ── Coaching ── */
+[data-theme="dark"] .tcv2-body { background: #1a1420 !important; }
+[data-theme="dark"] .tcv2-name { color: #f0e6ec !important; }
+[data-theme="dark"] .tcv2-role,
+[data-theme="dark"] .tcv2-spec { color: #9a7a8a !important; }
+
+/* ── Salles ── */
+[data-theme="dark"] .salle-tag { background: #2a1225 !important; color: #f48fb1 !important; }
+[data-theme="dark"] .salle-body { background: #1a1420 !important; }
+[data-theme="dark"] .salle-address { color: #9a7a8a !important; }
+[data-theme="dark"] .salles-map-list { background: #1a1420 !important; }
+[data-theme="dark"] .salles-map-item { background: #1a1420 !important; border-color: rgba(233,30,140,0.1) !important; }
+[data-theme="dark"] .salles-map-item.active { background: rgba(233,30,140,0.12) !important; }
+[data-theme="dark"] .smi-city { color: #f0e6ec !important; }
+[data-theme="dark"] .smi-address,
+[data-theme="dark"] .smi-hours { color: #9a7a8a !important; }
+
+/* ── Home page ── */
+[data-theme="dark"] .hf-card { background: #1a1420 !important; border-color: rgba(233,30,140,0.15) !important; }
+[data-theme="dark"] .hf-desc { color: #9a7a8a !important; }
+[data-theme="dark"] .hstat { border-color: rgba(233,30,140,0.15) !important; }
+[data-theme="dark"] .hstat-val { color: #f0e6ec !important; }
+[data-theme="dark"] .hstat-label { color: #9a7a8a !important; }
+[data-theme="dark"] .htest-author { color: #9a7a8a !important; }
+
+/* ── Profil ── */
+[data-theme="dark"] .profil-page { background: #0f0c12 !important; }
+[data-theme="dark"] .profil-field label { color: #9a7a8a !important; }
+
+/* ── Skeleton ── */
+[data-theme="dark"] .sk-card { background: #1a1420 !important; border-color: rgba(233,30,140,0.1) !important; }
+[data-theme="dark"] .sk-img,
+[data-theme="dark"] .sk-line,
+[data-theme="dark"] .sk-btn,
+[data-theme="dark"] .sk-price { background: linear-gradient(90deg, #1a1420 25%, #2a1830 50%, #1a1420 75%) !important; }
