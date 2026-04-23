@@ -96,7 +96,7 @@ export default function Salles() {
         <div className="container">
 
           {/* Filtres */}
-          <div className="salles-filters">
+          <div className="salles-filters reveal">
             {cities.map(c => (
               <button
                 key={c}
@@ -115,7 +115,7 @@ export default function Salles() {
           </div>
 
           {/* Grille */}
-          <div className="salles-grid">
+          <div className="salles-grid reveal reveal-delay-2">
             {loadingSalles
               ? <SkeletonGrid count={6} height={320} />
               : filtered.map(s => (
@@ -237,7 +237,7 @@ export default function Salles() {
             <span className="tag">Dans chaque salle</span>
             <h2 className="section-title">Un espace <span className="pink-text">pensé pour toi</span></h2>
           </div>
-          <div className="services-grid">
+          <div className="services-grid reveal reveal-delay-2">
             {services.map(s => (
               <div key={s.title} className="service-card">
                 <div className="serv-icon">{s.icon}</div>

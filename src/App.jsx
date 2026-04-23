@@ -27,6 +27,8 @@ import AdminCours from './admin/AdminCours'
 import AdminUtilisateurs from './admin/AdminUtilisateurs'
 import AdminInscriptions from './admin/AdminInscriptions'
 
+import ScrollToTop, { ScrollReset } from './components/ScrollToTop'
+import useReveal from './hooks/useReveal'
 import './index.css'
 
 /* Pages sans Navbar ni Footer */
@@ -54,9 +56,11 @@ function AppRoutes() {
   const { pathname } = useLocation()
   const isAuth  = AUTH_PAGES.includes(pathname)
   const isAdmin = pathname.startsWith('/admin')
+  useReveal()
 
   return (
     <>
+      <ScrollReset />
       {!isAuth && !isAdmin && <Navbar />}
       <Routes>
         {/* Public */}
@@ -87,6 +91,7 @@ function AppRoutes() {
         <Route path="*" element={<NotFound />} />
       </Routes>
       {!isAuth && !isAdmin && <Footer />}
+      {!isAuth && !isAdmin && <ScrollToTop />}
     </>
   )
 }

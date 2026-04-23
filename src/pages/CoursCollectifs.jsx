@@ -126,7 +126,7 @@ export default function CoursCollectifs() {
         <div className="container">
 
           {/* Filtres */}
-          <div className="cours-filters">
+          <div className="cours-filters reveal">
             {filters.map(f => (
               <button
                 key={f.label}
@@ -155,7 +155,7 @@ export default function CoursCollectifs() {
           </div>
 
           {/* Grille de cartes */}
-          <div className="courses-grid-v2">
+          <div className="courses-grid-v2 reveal reveal-delay-2">
             {loadingCours
               ? <SkeletonGrid count={6} height={340} />
               : filtered.map(c => (
@@ -205,7 +205,7 @@ export default function CoursCollectifs() {
             <h2 className="section-title">Planning de la <span className="pink-text">semaine</span></h2>
             <p className="section-subtitle">Horaires indicatifs — varie selon les salles. Consulte l'app pour ton planning exact.</p>
           </div>
-          <div className="planning-grid">
+          <div className="planning-grid reveal reveal-delay-2">
             {schedule.map(d => (
               <div key={d.day} className="planning-day">
                 <div className="day-header">{d.day}</div>
