@@ -494,3 +494,10 @@
   .adm-page-header { flex-direction: column; align-items: flex-start; }
   .adm-stats-grid { grid-template-columns: 1fr 1fr; }
 }
+
+/* Export buttons */
+.adm-export-btn { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.5rem 1rem; border-radius: 8px; font-size: 0.8rem; font-weight: 600; cursor: pointer; border: none; transition: opacity 0.2s; }
+.adm-export-btn svg { width: 14px; height: 14px; }
+.adm-export-btn:hover { opacity: 0.85; }
+.adm-export-excel { background: #1d6f42; color: white; }
+.adm-export-pdf { background: #c0392b; color: white; }

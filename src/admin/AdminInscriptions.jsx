@@ -1,5 +1,8 @@
 import { useEffect, useState } from 'react'
 import { admin } from '../services/api'
+import * as XLSX from 'xlsx'
+import jsPDF from 'jspdf'
+import autoTable from 'jspdf-autotable'
 import './AdminPages.css'
 
 const STATUT_COLOR = { active: 'adm-badge-green', annulee: 'adm-badge-red', expiree: 'adm-badge-gray', en_attente: 'adm-badge-orange' }
@@ -25,6 +28,49 @@ export default function AdminInscriptions() {
   const handleSearch = (e) => { setSearch(e.target.value); load(1, e.target.value, statut) }
   const handleStatut = (e) => { setStatut(e.target.value); load(1, search, e.target.value) }
 
+  function exportExcel() {
+    const rows = list.map(i => ({
+      'Prénom': i.user?.prenom ?? '',
+      'Nom': i.user?.name ?? '',
+      'Email': i.user?.email ?? '',
+      'Abonnement': i.abonnement?.nom ?? '',
+      'Salle': i.salle?.nom ?? '',
+      'Fréquence': i.frequence ?? '',
+      'Montant (Dh)': i.montant_paye ?? '',
+      'Début': i.date_debut ? new Date(i.date_debut).toLocaleDateString('fr-FR') : '',
+      'Fin': i.date_fin ? new Date(i.date_fin).toLocaleDateString('fr-FR') : '',
+      'Statut': STATUT_LABEL[i.statut] ?? i.statut,
+    }))
+    const ws = XLSX.utils.json_to_sheet(rows)
+    const wb = XLSX.utils.book_new()
+    XLSX.utils.book_append_sheet(wb, ws, 'Inscriptions')
+    XLSX.writeFile(wb, 'inscriptions.xlsx')
+  }
+
+  function exportPDF() {
+    const doc = new jsPDF({ orientation: 'landscape' })
+    doc.setFontSize(16)
+    doc.text('Inscriptions — Move Like Her', 14, 15)
+    autoTable(doc, {
+      startY: 22,
+      head: [['Membre', 'Email', 'Abonnement', 'Salle', 'Fréquence', 'Montant', 'Début', 'Fin', 'Statut']],
+      body: list.map(i => [
+        `${i.user?.prenom ?? ''} ${i.user?.name ?? ''}`,
+        i.user?.email ?? '',
+        i.abonnement?.nom ?? '',
+        i.salle?.nom ?? '',
+        i.frequence ?? '',
+        `${i.montant_paye ?? ''} Dh`,
+        i.date_debut ? new Date(i.date_debut).toLocaleDateString('fr-FR') : '',
+        i.date_fin ? new Date(i.date_fin).toLocaleDateString('fr-FR') : '',
+        STATUT_LABEL[i.statut] ?? i.statut,
+      ]),
+      styles: { fontSize: 8 },
+      headStyles: { fillColor: [233, 30, 140] },
+    })
+    doc.save('inscriptions.pdf')
+  }
+
   return (
     <div className="adm-page">
       <div className="adm-page-header">
@@ -36,6 +82,14 @@ export default function AdminInscriptions() {
         <div className="adm-section-head">
           <h2 className="adm-section-title">Inscriptions ({meta?.total ?? list.length})</h2>
           <div className="adm-section-actions">
+            <button className="adm-export-btn adm-export-excel" onClick={exportExcel}>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+              Excel
+            </button>
+            <button className="adm-export-btn adm-export-pdf" onClick={exportPDF}>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><line x1="9" y1="15" x2="15" y2="15"/></svg>
+              PDF
+            </button>
             <select className="adm-filter-select" value={statut} onChange={handleStatut}>
               <option value="">Tous statuts</option>
               <option value="active">Actives</option>
