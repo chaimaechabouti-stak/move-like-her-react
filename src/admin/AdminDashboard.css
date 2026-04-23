@@ -258,3 +258,38 @@
   font-size: .78rem; color: #9c6b80;
 }
 .adm-detail-footer strong { font-size: .88rem; }
+
+/* ══════════════════════════════════════ GRAPHIQUES CHART.JS */
+.adm-charts-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.adm-chart-card {
+  background: #fff;
+  border-radius: 20px;
+  padding: 1.5rem;
+  border: 1px solid #fce4ec;
+  box-shadow: 0 2px 16px rgba(233,30,140,0.06);
+}
+
+.adm-chart-wrap {
+  height: 220px;
+  margin-top: 1rem;
+  position: relative;
+}
+
+.adm-chart-wrap--donut {
+  height: 260px;
+}
+
+.adm-chart-empty {
+  display: flex; align-items: center; justify-content: center;
+  height: 100%; color: #9c6b80; font-size: 0.9rem;
+}
+
+@media (max-width: 900px) {
+  .adm-charts-grid { grid-template-columns: 1fr; }
+}

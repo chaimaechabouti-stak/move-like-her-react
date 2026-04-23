@@ -1,8 +1,19 @@
 import { useEffect, useState, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import { admin } from '../services/api'
+import {
+  Chart as ChartJS,
+  CategoryScale, LinearScale, PointElement, LineElement,
+  BarElement, ArcElement, Tooltip, Legend, Filler
+} from 'chart.js'
+import { Line, Bar, Doughnut } from 'react-chartjs-2'
 import './AdminPages.css'
 import './AdminDashboard.css'
+
+ChartJS.register(
+  CategoryScale, LinearScale, PointElement, LineElement,
+  BarElement, ArcElement, Tooltip, Legend, Filler
+)
 
 /* ── Compteur animé ── */
 function CountUp({ to, duration = 1400, prefix = '', suffix = '' }) {
@@ -125,6 +136,32 @@ export default function AdminDashboard() {
   const sparkInscriptions= [8,  11, 9,  14, 13, 16, stats?.inscriptions ?? 0]
   const sparkRevenus     = [1200,1500,1100,1800,1600,2100, stats?.revenus ?? 0]
   const barsInscrip      = [3, 5, 4, 7, 6, 8, 5]
+
+  const MOIS = ['Jan','Fév','Mar','Avr','Mai','Juin','Juil','Aoû','Sep','Oct','Nov','Déc']
+
+  // Données pour le graphique ligne (inscriptions + revenus par mois)
+  const inscMoisLabels = stats?.inscriptions_mois?.map(m => `${MOIS[m.mois - 1]} ${m.annee}`) ?? []
+  const inscMoisData   = stats?.inscriptions_mois?.map(m => m.total) ?? []
+  const revMoisData    = stats?.inscriptions_mois?.map(m => m.revenus) ?? []
+
+  // Données pour le graphique ligne (membres par mois)
+  const membresMoisLabels = stats?.membres_mois?.map(m => `${MOIS[m.mois - 1]} ${m.annee}`) ?? []
+  const membresMoisData   = stats?.membres_mois?.map(m => m.total) ?? []
+
+  // Données pour le doughnut (répartition abonnements)
+  const aboLabels = stats?.repartition_abos?.map(a => a.nom) ?? []
+  const aboData   = stats?.repartition_abos?.map(a => a.total) ?? []
+  const aboColors = ['#e91e8c', '#9c27b0', '#d81b60', '#f06292', '#ab47bc']
+
+  const chartOptions = {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: { legend: { display: false }, tooltip: { mode: 'index', intersect: false } },
+    scales: {
+      x: { grid: { color: 'rgba(233,30,140,0.06)' }, ticks: { color: '#9c6b80', font: { size: 11 } } },
+      y: { grid: { color: 'rgba(233,30,140,0.06)' }, ticks: { color: '#9c6b80', font: { size: 11 } }, beginAtZero: true },
+    },
+  }
 
   const tauxOccup = stats?.users && stats?.inscriptions
     ? Math.min(100, Math.round((stats.inscriptions / stats.users) * 100))
@@ -330,6 +367,125 @@ export default function AdminDashboard() {
         </div>
 
       </div>
+
+      {/* ── GRAPHIQUES CHART.JS ── */}
+      {!loading && stats && (
+        <div className="adm-charts-grid">
+
+          {/* Ligne : Inscriptions par mois */}
+          <div className="adm-chart-card">
+            <div className="adm-metric-head">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+              <h3>Inscriptions par mois</h3>
+            </div>
+            <div className="adm-chart-wrap">
+              <Line
+                data={{
+                  labels: inscMoisLabels,
+                  datasets: [{
+                    label: 'Inscriptions',
+                    data: inscMoisData,
+                    borderColor: '#e91e8c',
+                    backgroundColor: 'rgba(233,30,140,0.1)',
+                    fill: true,
+                    tension: 0.4,
+                    pointBackgroundColor: '#e91e8c',
+                    pointRadius: 4,
+                  }]
+                }}
+                options={chartOptions}
+              />
+            </div>
+          </div>
+
+          {/* Barre : Revenus par mois */}
+          <div className="adm-chart-card">
+            <div className="adm-metric-head">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7"><path d="M18 20V10M12 20V4M6 20v-6"/></svg>
+              <h3>Revenus par mois (Dh)</h3>
+            </div>
+            <div className="adm-chart-wrap">
+              <Bar
+                data={{
+                  labels: inscMoisLabels,
+                  datasets: [{
+                    label: 'Revenus (Dh)',
+                    data: revMoisData,
+                    backgroundColor: 'rgba(156,39,176,0.7)',
+                    borderColor: '#9c27b0',
+                    borderWidth: 2,
+                    borderRadius: 8,
+                  }]
+                }}
+                options={chartOptions}
+              />
+            </div>
+          </div>
+
+          {/* Ligne : Nouveaux membres */}
+          <div className="adm-chart-card">
+            <div className="adm-metric-head">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7"><circle cx="9" cy="7" r="4"/><path d="M3 21v-2a4 4 0 014-4h4a4 4 0 014 4v2"/><path d="M19 8v6M16 11h6"/></svg>
+              <h3>Nouveaux membres par mois</h3>
+            </div>
+            <div className="adm-chart-wrap">
+              <Line
+                data={{
+                  labels: membresMoisLabels,
+                  datasets: [{
+                    label: 'Membres',
+                    data: membresMoisData,
+                    borderColor: '#d81b60',
+                    backgroundColor: 'rgba(216,27,96,0.1)',
+                    fill: true,
+                    tension: 0.4,
+                    pointBackgroundColor: '#d81b60',
+                    pointRadius: 4,
+                  }]
+                }}
+                options={chartOptions}
+              />
+            </div>
+          </div>
+
+          {/* Doughnut : Répartition abonnements */}
+          <div className="adm-chart-card">
+            <div className="adm-metric-head">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7"><circle cx="12" cy="12" r="10"/><path d="M12 2a10 10 0 0110 10"/></svg>
+              <h3>Répartition des abonnements</h3>
+            </div>
+            <div className="adm-chart-wrap adm-chart-wrap--donut">
+              {aboData.length > 0 ? (
+                <>
+                  <Doughnut
+                    data={{
+                      labels: aboLabels,
+                      datasets: [{
+                        data: aboData,
+                        backgroundColor: aboColors,
+                        borderWidth: 2,
+                        borderColor: '#fff',
+                      }]
+                    }}
+                    options={{
+                      responsive: true,
+                      maintainAspectRatio: false,
+                      plugins: {
+                        legend: { position: 'bottom', labels: { color: '#2d1a24', font: { size: 12 }, padding: 16 } },
+                        tooltip: { mode: 'index' },
+                      },
+                      cutout: '65%',
+                    }}
+                  />
+                </>
+              ) : (
+                <div className="adm-chart-empty">Aucune donnée</div>
+              )}
+            </div>
+          </div>
+
+        </div>
+      )}
 
       {/* ── DETAIL STATS TABLE ── */}
       <div className="adm-detail-grid">
