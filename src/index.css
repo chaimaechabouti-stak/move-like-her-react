@@ -15,6 +15,22 @@
   --gray: #6b5060;
 }
 
+/* ── Dark mode ── */
+[data-theme="dark"] {
+  --white: #121016;
+  --gray-light: #1c1520;
+  --dark: #f0e6ec;
+  --dark-2: #e0ccd8;
+  --gray: #b89aaa;
+  --pink-100: #2a1225;
+  --pink-200: #3d1835;
+}
+
+[data-theme="dark"] body {
+  background: #121016;
+  color: #f0e6ec;
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -140,3 +156,37 @@ button {
   letter-spacing: 1px;
   margin-bottom: 1rem;
 }
+
+/* ── Dark mode overrides ── */
+[data-theme="dark"] .course-card-v2,
+[data-theme="dark"] .salle-card,
+[data-theme="dark"] .service-card,
+[data-theme="dark"] .profil-card,
+[data-theme="dark"] .dash-card,
+[data-theme="dark"] .planning-day,
+[data-theme="dark"] .adm-section,
+[data-theme="dark"] .adm-table-wrap { background: #1e1520 !important; border-color: rgba(233,30,140,0.15) !important; }
+
+[data-theme="dark"] .ccv2-name,
+[data-theme="dark"] .salle-name,
+[data-theme="dark"] .dash-card-title,
+[data-theme="dark"] .profil-card-head h2 { color: #f0e6ec !important; }
+
+[data-theme="dark"] .ccv2-desc,
+[data-theme="dark"] .salle-address,
+[data-theme="dark"] .slot-name,
+[data-theme="dark"] .slot-time { color: #b89aaa !important; }
+
+[data-theme="dark"] .cours-body,
+[data-theme="dark"] .salles-body,
+[data-theme="dark"] .services-section,
+[data-theme="dark"] .planning-section { background: #121016 !important; }
+
+[data-theme="dark"] .section-title { color: #f0e6ec !important; }
+[data-theme="dark"] .tag { background: #2a1225 !important; }
+
+[data-theme="dark"] .profil-field input { background: #1e1520 !important; border-color: rgba(233,30,140,0.25) !important; color: #f0e6ec !important; }
+
+[data-theme="dark"] .adm-table th { background: #2a1225 !important; }
+[data-theme="dark"] .adm-table td { border-color: rgba(233,30,140,0.1) !important; color: #d0b8c8 !important; }
+[data-theme="dark"] .adm-table tr:hover td { background: rgba(233,30,140,0.06) !important; }
