@@ -14,6 +14,7 @@ import Register from './pages/Register'
 import Dashboard from './pages/Dashboard'
 import DashboardCoach from './pages/DashboardCoach'
 import Profil from './pages/Profil'
+import Stats from './pages/Stats'
 import PaiementSucces from './pages/PaiementSucces'
 import NotFound from './pages/NotFound'
 
@@ -75,6 +76,7 @@ function AppRoutes() {
         <Route path="/register"         element={<Register />} />
         <Route path="/dashboard"        element={<DashboardRouter />} />
         <Route path="/profil"           element={<Profil />} />
+        <Route path="/stats"            element={<Stats />} />
 
         {/* Admin — layout imbriqué */}
         <Route path="/admin" element={<RequireAdmin><AdminLayout /></RequireAdmin>}>
