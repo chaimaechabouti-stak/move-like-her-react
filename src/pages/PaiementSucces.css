@@ -1,0 +1,150 @@
+.ps-page {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #fdf0f6 0%, #fff 60%, #fce4f0 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  position: relative;
+  overflow: hidden;
+}
+
+/* ── Card ── */
+.ps-card {
+  background: white;
+  border-radius: 28px;
+  padding: 3.5rem 3rem;
+  max-width: 480px;
+  width: 100%;
+  text-align: center;
+  box-shadow: 0 20px 80px rgba(233,30,140,0.12);
+  border: 1.5px solid rgba(233,30,140,0.1);
+  opacity: 0;
+  transform: translateY(30px) scale(0.97);
+  transition: opacity 0.6s ease, transform 0.6s cubic-bezier(0.34,1.56,0.64,1);
+  position: relative;
+  z-index: 2;
+}
+.ps-card--in {
+  opacity: 1;
+  transform: none;
+}
+
+/* ── Cercle check ── */
+.ps-circle {
+  width: 90px;
+  height: 90px;
+  margin: 0 auto 2rem;
+}
+
+.ps-checkmark {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+}
+
+.ps-checkmark__circle {
+  stroke: #e91e8c;
+  stroke-width: 2;
+  stroke-dasharray: 166;
+  stroke-dashoffset: 166;
+  stroke-linecap: round;
+  animation: psStroke 0.6s cubic-bezier(0.65, 0, 0.45, 1) 0.3s forwards;
+}
+
+.ps-checkmark__check {
+  stroke: #e91e8c;
+  stroke-width: 2.5;
+  stroke-dasharray: 48;
+  stroke-dashoffset: 48;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  animation: psStroke 0.3s cubic-bezier(0.65, 0, 0.45, 1) 0.8s forwards;
+}
+
+@keyframes psStroke {
+  100% { stroke-dashoffset: 0; }
+}
+
+/* ── Texte ── */
+.ps-title {
+  font-size: 2rem;
+  font-weight: 900;
+  color: #2d1a24;
+  margin: 0 0 1rem;
+}
+.ps-desc {
+  font-size: 1rem;
+  color: #9c6b80;
+  line-height: 1.7;
+  margin: 0 0 1.5rem;
+}
+.ps-ref {
+  font-size: 0.8rem;
+  color: #bbb;
+  margin-bottom: 2rem;
+}
+.ps-ref code {
+  background: #f5f5f5;
+  padding: 0.2rem 0.5rem;
+  border-radius: 6px;
+  font-family: monospace;
+  color: #9c6b80;
+}
+
+/* ── Actions ── */
+.ps-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+.ps-btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background: linear-gradient(135deg, #e91e8c, #c2185b);
+  color: white;
+  font-size: 0.95rem;
+  font-weight: 700;
+  padding: 0.95rem 2rem;
+  border-radius: 50px;
+  text-decoration: none;
+  transition: all 0.3s;
+  box-shadow: 0 6px 25px rgba(233,30,140,0.35);
+}
+.ps-btn-primary svg { width: 16px; height: 16px; }
+.ps-btn-primary:hover { transform: translateY(-2px); box-shadow: 0 10px 35px rgba(233,30,140,0.5); }
+
+.ps-btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #9c6b80;
+  font-size: 0.88rem;
+  font-weight: 500;
+  text-decoration: none;
+  padding: 0.75rem;
+  border-radius: 50px;
+  transition: color 0.2s;
+}
+.ps-btn-ghost:hover { color: #e91e8c; }
+
+/* ── Confettis ── */
+.ps-confetti {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+  background: var(--color);
+  left: var(--x);
+  top: -20px;
+  opacity: 0;
+  animation: psFall 2.5s ease-in var(--delay) forwards;
+}
+
+@keyframes psFall {
+  0%   { opacity: 1; transform: translateY(0) rotate(0deg) scale(1); }
+  80%  { opacity: 1; }
+  100% { opacity: 0; transform: translateY(110vh) rotate(720deg) scale(0.5); }
+}

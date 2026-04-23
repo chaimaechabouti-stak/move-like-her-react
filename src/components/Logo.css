@@ -1,0 +1,72 @@
+/* ════════════════════════════════════════
+   LOGO — Move Like Her
+   ════════════════════════════════════════ */
+
+.mlh-logo-wrap {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.7rem;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+/* Icône SVG */
+.mlh-logo-icon {
+  flex-shrink: 0;
+  transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.mlh-logo-wrap:hover .mlh-logo-icon {
+  transform: scale(1.08);
+}
+
+/* Bloc texte */
+.mlh-logo-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  line-height: 1;
+}
+
+/* Nom principal */
+.mlh-logo-name {
+  display: flex;
+  align-items: baseline;
+  gap: 0;
+  font-family: 'Poppins', sans-serif;
+  letter-spacing: 0.5px;
+}
+
+.mlh-move {
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: #ffffff;
+  letter-spacing: 1px;
+}
+
+.mlh-like {
+  font-size: 1.05rem;
+  font-weight: 300;
+  color: rgba(255, 255, 255, 0.4);
+  letter-spacing: 1px;
+}
+
+.mlh-her {
+  font-size: 1.05rem;
+  font-weight: 800;
+  letter-spacing: 1px;
+  /* Dégradé rose sur le texte */
+  background: linear-gradient(90deg, #f72585, #ff6bb5);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Tagline */
+.mlh-logo-tagline {
+  font-size: 0.55rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.28);
+  letter-spacing: 1.8px;
+  text-transform: uppercase;
+  white-space: nowrap;
+}

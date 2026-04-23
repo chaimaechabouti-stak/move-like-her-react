@@ -1,0 +1,465 @@
+@import './shared.css';
+
+.page-coaching { padding-top: 0; }
+
+/* ════════════════════════════════════════
+   HERO
+   ════════════════════════════════════════ */
+.coaching-hero {
+  position: relative;
+  min-height: 70vh;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+}
+.coaching-hero-bg {
+  position: absolute;
+  inset: 0;
+  background-image: url('https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=1600&q=80&fit=crop');
+  background-size: cover;
+  background-position: center 40%;
+  z-index: 0;
+  animation: coachingBgDrift 14s ease-in-out infinite alternate;
+}
+@keyframes coachingBgDrift {
+  from { transform: scale(1.04); }
+  to   { transform: scale(1.08) translateX(-1%); }
+}
+.coaching-hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(10,3,8,0.85) 0%, rgba(30,5,20,0.7) 60%, rgba(10,3,8,0.5) 100%);
+  z-index: 1;
+}
+.coaching-hero-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  z-index: 1;
+  pointer-events: none;
+}
+.coaching-hero-orb-1 { width: 550px; height: 350px; background: rgba(233,30,140,0.2); top: -60px; left: -80px; }
+.coaching-hero-orb-2 { width: 400px; height: 280px; background: rgba(194,24,91,0.13); bottom: 0; right: -60px; }
+
+.coaching-hero-content {
+  position: relative;
+  z-index: 2;
+  padding-top: 30px;
+  padding-bottom: 60px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1.5rem;
+  max-width: 680px;
+}
+.coaching-hero-title {
+  font-size: clamp(2.4rem, 5.5vw, 4rem);
+  font-weight: 900;
+  color: white;
+  line-height: 1.1;
+  letter-spacing: -1px;
+}
+.coaching-hero-desc {
+  font-size: clamp(0.92rem, 1.4vw, 1.05rem);
+  color: rgba(255,255,255,0.62);
+  line-height: 1.8;
+}
+.coaching-hero-actions {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  flex-wrap: wrap;
+}
+.coaching-hero-ghost {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: rgba(255,255,255,0.6);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.coaching-hero-ghost:hover { color: white; }
+
+/* ════════════════════════════════════════
+   TYPES DE COACHING
+   ════════════════════════════════════════ */
+.coaching-types { padding: 5rem 0; background: var(--gray-light); }
+
+.coaching-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+}
+
+.coaching-card {
+  background: white;
+  border-radius: 22px;
+  padding: 2.2rem;
+  border: 1px solid rgba(233,30,140,0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  transition: transform 0.35s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.3s;
+}
+.coaching-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 24px 60px rgba(233,30,140,0.14);
+}
+
+.coa-icon-wrap {
+  width: 58px;
+  height: 58px;
+  border-radius: 16px;
+  border: 1px solid;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s;
+}
+.coa-icon { display: flex; align-items: center; justify-content: center; }
+.coa-icon svg { width: 26px; height: 26px; }
+.coaching-card:hover .coa-icon-wrap { transform: scale(1.08); box-shadow: 0 8px 24px rgba(233,30,140,0.2); }
+
+.coa-title {
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: var(--dark);
+}
+.coa-desc {
+  font-size: 0.88rem;
+  color: var(--gray);
+  line-height: 1.7;
+}
+.coa-features {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+.coa-features li {
+  font-size: 0.85rem;
+  color: var(--dark);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.coa-check { display: flex; align-items: center; flex-shrink: 0; }
+.coa-check svg { width: 14px; height: 14px; }
+
+.coa-price {
+  font-size: 0.88rem;
+  font-weight: 700;
+  padding: 0.55rem 1rem;
+  border-radius: 10px;
+  border: 1px solid;
+  display: inline-block;
+  align-self: flex-start;
+}
+.coa-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: white;
+  font-size: 0.85rem;
+  font-weight: 700;
+  padding: 0.75rem 1.5rem;
+  border-radius: 50px;
+  text-decoration: none;
+  align-self: flex-start;
+  transition: all 0.3s;
+  box-shadow: 0 6px 20px rgba(233,30,140,0.3);
+}
+.coa-btn svg { width: 15px; height: 15px; transition: transform 0.2s; }
+.coa-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(233,30,140,0.45); }
+.coa-btn:hover svg { transform: translateX(4px); }
+
+/* ════════════════════════════════════════
+   PROCESS
+   ════════════════════════════════════════ */
+.process-section {
+  padding: 5rem 0;
+  background: #0a0308;
+}
+.process-section .tag { background: rgba(233,30,140,0.15); color: #f06292; }
+
+.steps-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.25rem;
+  position: relative;
+}
+.step-card {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 20px;
+  padding: 2rem 1.5rem;
+  color: white;
+  text-align: center;
+  position: relative;
+  transition: border-color 0.3s, transform 0.3s;
+}
+.step-card:hover {
+  border-color: rgba(233,30,140,0.35);
+  transform: translateY(-5px);
+}
+.step-icon {
+  width: 52px;
+  height: 52px;
+  background: rgba(233,30,140,0.12);
+  border-radius: 14px;
+  border: 1px solid rgba(233,30,140,0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1rem;
+}
+.step-icon svg { width: 22px; height: 22px; color: #e91e8c; }
+.step-num {
+  font-size: 2.2rem;
+  font-weight: 900;
+  color: rgba(233,30,140,0.25);
+  line-height: 1;
+  margin-bottom: 0.6rem;
+  letter-spacing: -1px;
+}
+.step-card h3 { font-size: 0.95rem; font-weight: 700; margin-bottom: 0.5rem; }
+.step-card p { font-size: 0.82rem; color: rgba(255,255,255,0.5); line-height: 1.6; }
+.step-arrow {
+  position: absolute;
+  right: -1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 2;
+  color: rgba(233,30,140,0.4);
+}
+.step-arrow svg { width: 18px; height: 18px; }
+
+/* ════════════════════════════════════════
+   COACHES
+   ════════════════════════════════════════ */
+.team-section {
+  padding: 5rem 0;
+  background: #0f0510;
+}
+.team-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 2rem;
+  flex-wrap: wrap;
+  margin-bottom: 3rem;
+}
+.team-header .section-title { margin-bottom: 0; }
+.team-header .tag { margin-bottom: 0.5rem; }
+.team-header-sub {
+  font-size: 0.88rem;
+  color: rgba(255,255,255,0.38);
+  max-width: 300px;
+  line-height: 1.7;
+  text-align: right;
+}
+.team-grid-v2 {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.25rem;
+}
+.team-card-v2 {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 20px;
+  overflow: hidden;
+  transition: transform 0.35s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.3s, border-color 0.3s;
+}
+.team-card-v2:hover {
+  transform: translateY(-8px);
+  border-color: rgba(233,30,140,0.3);
+  box-shadow: 0 24px 60px rgba(233,30,140,0.18);
+}
+.tcv2-photo-wrap {
+  position: relative;
+  height: 220px;
+  overflow: hidden;
+}
+.tcv2-photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top;
+  transition: transform 0.5s ease;
+}
+.team-card-v2:hover .tcv2-photo { transform: scale(1.06); }
+.tcv2-photo-overlay { position: absolute; inset: 0; }
+.tcv2-exp-badge {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  background: rgba(10,3,8,0.75);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 10px;
+  padding: 0.4rem 0.65rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  line-height: 1;
+}
+.tcv2-exp-badge span { font-size: 0.95rem; font-weight: 800; color: white; }
+.tcv2-exp-badge small { font-size: 0.6rem; color: rgba(255,255,255,0.45); text-transform: uppercase; letter-spacing: 0.8px; }
+
+.tcv2-body { padding: 1.25rem; display: flex; flex-direction: column; gap: 0.85rem; }
+.tcv2-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 0.5rem; }
+.tcv2-name { font-size: 1.05rem; font-weight: 800; color: white; margin-bottom: 0.2rem; }
+.tcv2-role { font-size: 0.76rem; font-weight: 600; letter-spacing: 0.3px; }
+.tcv2-certif {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.67rem;
+  color: rgba(255,255,255,0.38);
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 8px;
+  padding: 0.3rem 0.5rem;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.tcv2-certif svg { width: 11px; height: 11px; color: #e91e8c; flex-shrink: 0; }
+.tcv2-quote {
+  font-size: 0.78rem;
+  color: rgba(255,255,255,0.42);
+  font-style: italic;
+  line-height: 1.6;
+  border-left: 2px solid rgba(233,30,140,0.4);
+  padding-left: 0.75rem;
+  margin: 0;
+}
+.tcv2-courses { display: flex; flex-wrap: wrap; gap: 0.35rem; }
+.tcv2-course-pill {
+  font-size: 0.68rem;
+  font-weight: 600;
+  color: rgba(255,255,255,0.5);
+  background: rgba(233,30,140,0.08);
+  border: 1px solid rgba(233,30,140,0.15);
+  border-radius: 50px;
+  padding: 0.25rem 0.6rem;
+  transition: all 0.2s;
+}
+.team-card-v2:hover .tcv2-course-pill {
+  background: rgba(233,30,140,0.15);
+  border-color: rgba(233,30,140,0.3);
+  color: white;
+}
+
+/* ════════════════════════════════════════
+   TÉMOIGNAGES
+   ════════════════════════════════════════ */
+.temoignages-section { padding: 5rem 0; background: var(--gray-light); }
+.temoignages-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+}
+.temo-card {
+  background: white;
+  border-radius: 20px;
+  padding: 2rem;
+  border: 1px solid rgba(233,30,140,0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  transition: all 0.3s;
+}
+.temo-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 45px rgba(233,30,140,0.12);
+  border-color: rgba(233,30,140,0.25);
+}
+.temo-stars { display: flex; gap: 0.2rem; }
+.temo-stars svg { width: 15px; height: 15px; }
+.temo-text { font-size: 0.9rem; color: var(--dark); line-height: 1.75; font-style: italic; flex: 1; }
+.temo-author { display: flex; justify-content: space-between; align-items: center; }
+.temo-name { font-size: 0.88rem; font-weight: 700; color: var(--dark); }
+.temo-city {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.78rem;
+  color: var(--gray);
+}
+.temo-city svg { width: 12px; height: 12px; color: #e91e8c; }
+
+/* ════════════════════════════════════════
+   CTA
+   ════════════════════════════════════════ */
+.coaching-cta { padding: 5rem 0; background: #0a0308; }
+.cta-box {
+  position: relative;
+  background: linear-gradient(135deg, #c2185b, #e91e8c, #f06292);
+  border-radius: 28px;
+  padding: 4.5rem 3rem;
+  text-align: center;
+  color: white;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.25rem;
+}
+.cta-box-deco {
+  position: absolute;
+  inset: 0;
+  background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  pointer-events: none;
+}
+.cta-box h2 {
+  font-size: clamp(1.8rem, 4vw, 2.8rem);
+  font-weight: 900;
+  line-height: 1.15;
+}
+.cta-box p { font-size: 1rem; opacity: 0.85; max-width: 480px; line-height: 1.7; }
+.cta-main-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  background: white;
+  color: #c2185b;
+  font-size: 0.95rem;
+  font-weight: 800;
+  padding: 1rem 2.5rem;
+  border-radius: 50px;
+  text-decoration: none;
+  transition: all 0.3s;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+}
+.cta-main-btn svg { width: 16px; height: 16px; transition: transform 0.2s; }
+.cta-main-btn:hover { transform: translateY(-3px); box-shadow: 0 14px 40px rgba(0,0,0,0.3); }
+.cta-main-btn:hover svg { transform: translateX(4px); }
+
+/* ════════════════════════════════════════
+   RESPONSIVE
+   ════════════════════════════════════════ */
+@media (max-width: 1100px) {
+  .team-grid-v2 { grid-template-columns: repeat(2, 1fr); }
+  .team-header { flex-direction: column; align-items: flex-start; }
+  .team-header-sub { text-align: left; }
+}
+@media (max-width: 900px) {
+  .coaching-grid { grid-template-columns: 1fr; }
+  .steps-grid { grid-template-columns: repeat(2, 1fr); }
+  .step-arrow { display: none; }
+  .temoignages-grid { grid-template-columns: 1fr; }
+}
+@media (max-width: 600px) {
+  .steps-grid { grid-template-columns: 1fr; }
+  .team-grid-v2 { grid-template-columns: 1fr; }
+  .cta-box { padding: 3rem 1.5rem; }
+}
+
+/* ── Bouton réserver séance coach ── */
+.tcv2-book-btn {
+  display: flex; align-items: center; justify-content: center; gap: 0.5rem;
+  margin-top: 0.25rem; padding: 0.75rem 1rem; border-radius: 50px;
+  color: #fff; font-size: 0.85rem; font-weight: 700; text-decoration: none;
+  transition: opacity 0.2s, transform 0.2s; letter-spacing: 0.2px;
+}
+.tcv2-book-btn svg { width: 15px; height: 15px; flex-shrink: 0; }
+.tcv2-book-btn:hover { opacity: 0.88; transform: translateY(-2px); }
