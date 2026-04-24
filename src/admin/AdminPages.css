@@ -495,6 +495,24 @@
   .adm-stats-grid { grid-template-columns: 1fr 1fr; }
 }
 
+/* ── Loading / Empty ── */
+.adm-loading {
+  display: flex; align-items: center; justify-content: center; padding: 60px;
+}
+.adm-spinner {
+  width: 36px; height: 36px; border-radius: 50%;
+  border: 3px solid rgba(233,30,140,0.2);
+  border-top-color: #e91e8c;
+  animation: adm-spin 0.7s linear infinite;
+  display: inline-block;
+}
+@keyframes adm-spin { to { transform: rotate(360deg); } }
+
+.adm-empty {
+  text-align: center; padding: 60px 20px;
+  color: var(--text-muted); font-size: 14px;
+}
+
 /* Export buttons */
 .adm-export-btn { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.5rem 1rem; border-radius: 8px; font-size: 0.8rem; font-weight: 600; cursor: pointer; border: none; transition: opacity 0.2s; }
 .adm-export-btn svg { width: 14px; height: 14px; }
