@@ -207,6 +207,44 @@
 .salles-cta-btn:hover { transform: translateY(-3px); box-shadow: 0 14px 40px rgba(233,30,140,0.55); }
 .salles-cta-btn:hover svg { transform: translateX(4px); }
 
+/* ════════════════════════════════════════ GALERIE */
+.salles-galerie { padding: 5rem 0; background: var(--bg-soft); }
+
+.galerie-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: 240px 240px;
+  gap: 12px;
+  margin-top: 40px;
+}
+
+/* Grande image à gauche */
+.galerie-item-0 { grid-row: 1 / 3; }
+
+.galerie-item {
+  position: relative; overflow: hidden;
+  border-radius: 16px; cursor: pointer;
+}
+.galerie-item img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+  display: block;
+}
+.galerie-item:hover img { transform: scale(1.07); }
+
+.galerie-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(to top, rgba(10,3,8,0.75) 0%, transparent 55%);
+  display: flex; align-items: flex-end; padding: 16px;
+  opacity: 0; transition: opacity 0.3s;
+}
+.galerie-item:hover .galerie-overlay { opacity: 1; }
+.galerie-overlay span {
+  color: white; font-size: 14px; font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
 /* ════════════════════════════════════════ RESPONSIVE */
 @media (max-width: 1100px) { .salles-grid { grid-template-columns: repeat(2, 1fr); } }
 @media (max-width: 900px) { .services-grid { grid-template-columns: repeat(2, 1fr); } }
@@ -214,4 +252,9 @@
   .salles-grid { grid-template-columns: 1fr; }
   .services-grid { grid-template-columns: 1fr; }
   .salles-cta-box { padding: 3rem 1.5rem; }
+  .galerie-grid { grid-template-columns: 1fr 1fr; grid-template-rows: auto; }
+  .galerie-item-0 { grid-row: auto; }
+}
+@media (max-width: 400px) {
+  .galerie-grid { grid-template-columns: 1fr; }
 }

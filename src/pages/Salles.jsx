@@ -250,6 +250,34 @@ export default function Salles() {
       </section>
 
 
+      {/* ── GALERIE ── */}
+      <section className="salles-galerie">
+        <div className="container">
+          <div className="section-header reveal">
+            <span className="tag">Ambiance</span>
+            <h2 className="section-title">Nos <span className="pink-text">espaces</span></h2>
+            <p className="section-subtitle">Un aperçu de l'univers Move Like Her</p>
+          </div>
+          <div className="galerie-grid reveal reveal-delay-1">
+            {[
+              { src: 'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=800&q=80&fit=crop', label: 'Zone Cardio' },
+              { src: 'https://images.unsplash.com/photo-1571902943202-507ec2618e8f?w=800&q=80&fit=crop', label: 'Cours collectif' },
+              { src: 'https://images.unsplash.com/photo-1540497077202-7c8a3999166f?w=800&q=80&fit=crop', label: 'Zone Musculation' },
+              { src: 'https://images.unsplash.com/photo-1593079831268-3381b0db4a77?w=800&q=80&fit=crop', label: 'Studio de danse' },
+              { src: 'https://images.unsplash.com/photo-1558611848-73f7eb4001a1?w=800&q=80&fit=crop', label: 'Espace détente' },
+              { src: 'https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=800&q=80&fit=crop', label: 'Coaching perso' },
+            ].map((p, i) => (
+              <div key={i} className={`galerie-item galerie-item-${i}`}>
+                <img src={p.src} alt={p.label} loading="lazy" />
+                <div className="galerie-overlay">
+                  <span>{p.label}</span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
     </main>
   )
 }

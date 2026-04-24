@@ -1,10 +1,44 @@
 import { useEffect, useRef, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { courses, plans, espacesData } from '../data/courses'
 import { demandes as demandesApi } from '../services/api'
 import { Reveal, FadeIn, FadeLeft, FadeRight, ZoomIn, BlurIn, Counter } from '../hooks/Reveal'
 import './Home.css'
 import './Abonnements.css'
+
+const SLIDES = ['/images/gym1.png', '/images/gym2.png', '/images/gym3.png', '/images/gym4.png']
+
+function HeroSlideshow() {
+  const [current, setCurrent] = useState(0)
+  useEffect(() => {
+    const t = setInterval(() => setCurrent(c => (c + 1) % SLIDES.length), 5000)
+    return () => clearInterval(t)
+  }, [])
+  return (
+    <div className="hero-video-wrap">
+      {SLIDES.map((src, i) => (
+        <img
+          key={src}
+          src={src}
+          alt=""
+          aria-hidden="true"
+          className={`hero-slide ${i === current ? 'hero-slide-active' : ''}`}
+        />
+      ))}
+      <div className="hero-video-overlay" />
+      <div className="hero-slide-dots">
+        {SLIDES.map((_, i) => (
+          <button
+            key={i}
+            className={`hero-slide-dot ${i === current ? 'active' : ''}`}
+            onClick={() => setCurrent(i)}
+            aria-label={`Image ${i + 1}`}
+          />
+        ))}
+      </div>
+    </div>
+  )
+}
 
 /* SlideUp reste local — variante avec duration 600 spécifique à Home */
 const SlideUp = ({ children, delay = 0, className = '' }) =>
@@ -257,6 +291,7 @@ function FeaturesImmersive() {
 const CITIES = ['Casablanca', 'Rabat', 'Marrakech', 'Tanger', 'Fès', 'Agadir']
 
 export default function Home() {
+  const navigate = useNavigate()
   const [activeSalle, setActiveSalle] = useState(0)
   const [searchQuery, setSearchQuery] = useState('')
   const [searchFocus, setSearchFocus] = useState(false)
@@ -284,9 +319,9 @@ export default function Home() {
   const featuredCourses = courses.slice(0, 3)
   // 3 cours mis en avant sur la homepage
 
-  const filteredCities = searchQuery.length > 0
-    ? CITIES.filter(c => c.toLowerCase().startsWith(searchQuery.toLowerCase()))
-    : CITIES
+  const filteredCities = CITIES.filter(c =>
+    searchQuery.length === 0 || c.toLowerCase().startsWith(searchQuery.toLowerCase())
+  )
 
   return (
     <main className="home">
@@ -294,42 +329,39 @@ export default function Home() {
       {/* ════════════════════ HERO — Animation CSS ════════════════════ */}
       <section className="hero">
 
-        {/* Animated background */}
+        {/* Slideshow de fond */}
+        <HeroSlideshow />
+
+        {/* Légère teinte rose par-dessus */}
         <div className="hero-anim-bg">
           <div className="hero-anim-gradient" />
-          <div className="hero-grid-lines" />
-        </div>
-
-        {/* Orbs flottants */}
-        <div className="orb orb-1" />
-        <div className="orb orb-2" />
-        <div className="orb orb-3" />
-
-        {/* Texte géant en fond (style Neoness) */}
-        <div className="hero-bg-text" aria-hidden="true">
-          <span>MOVE</span>
-          <span className="hero-bg-text-2">LIKE HER</span>
         </div>
 
         {/* Contenu centré */}
         <div className="hero-center container">
 
-          <div className="hero-top-badge animate-badge">
-            <span className="badge-dot" />
-            <span>+5 000 membres convaincues</span>
-          </div>
+          <FadeIn delay={0}>
+            <div className="hero-top-badge animate-badge">
+              <span className="badge-dot" />
+              <span>+5 000 membres convaincues</span>
+            </div>
+          </FadeIn>
 
-          <h1 className="hero-title-big">
-            <span className="htb-line htb-line-1">WELCOME</span>
-            <em className="htb-line htb-line-2">To The Club</em>
-          </h1>
+          <FadeIn delay={120}>
+            <h1 className="hero-title-big">
+              <span className="htb-line htb-line-1">WELCOME</span>
+              <em className="htb-line htb-line-2">To The Club</em>
+            </h1>
+          </FadeIn>
 
-          <p className="hero-tagline">
-            La 1ère salle de sport 100% féminine au Maroc — Rejoins le mouvement.
-          </p>
+          <FadeIn delay={220}>
+            <p className="hero-tagline">
+              La 1ère salle de sport 100% féminine au Maroc — Rejoins le mouvement.
+            </p>
+          </FadeIn>
 
           {/* ── Barre de recherche villes ── */}
-          <div className={`hero-search-wrap ${searchFocus ? 'focused' : ''}`}>
+          <div className={`hero-search-wrap ${searchFocus ? 'focused' : ''}`} style={{ position: 'relative', zIndex: 9999 }}>
             <div className="hero-search-box">
               <svg className="hero-search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
@@ -350,35 +382,33 @@ export default function Home() {
                 </svg>
               </button>
             </div>
-            {/* Dropdown suggestions */}
-            {searchFocus && (
+            {searchFocus && filteredCities.length > 0 && (
               <div className="hero-search-dropdown">
                 {filteredCities.map(city => (
-                  <Link
+                  <div
                     key={city}
-                    to="/salles"
                     className="hero-search-item"
-                    onClick={() => { setSearchQuery(city); setSearchFocus(false) }}
+                    onMouseDown={(e) => {
+                      e.preventDefault()
+                      const slug = city.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+                      setSearchQuery(city)
+                      setSearchFocus(false)
+                      navigate(`/salles/${slug}`)
+                    }}
                   >
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="hero-search-pin">
                       <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/>
                       <circle cx="12" cy="9" r="2.5"/>
                     </svg>
                     {city}
-                  </Link>
+                  </div>
                 ))}
               </div>
             )}
           </div>
 
-          {/* Villes rapides */}
-          <div className="hero-city-pills">
-            {CITIES.map(city => (
-              <Link key={city} to="/salles" className="hero-city-pill">{city}</Link>
-            ))}
-          </div>
-
           {/* CTA */}
+          <FadeIn delay={320}>
           <div className="hero-actions">
             <Link to="/abonnements" className="hero-cta-primary">
               <span>Commencer dès 500 Dh</span>
@@ -390,21 +420,7 @@ export default function Home() {
               Trouver ma salle →
             </Link>
           </div>
-
-          {/* Stats bar */}
-          <div className="hero-stats-bar">
-            {[
-              { n: '6', s: '+', label: 'Salles au Maroc' },
-              { n: '15', s: '+', label: 'Cours collectifs' },
-              { n: '5000', s: '+', label: 'Membres actives' },
-              { n: '100', s: '%', label: 'Espace féminin' },
-            ].map((st, i) => (
-              <div key={i} className="hstat">
-                <span className="hstat-value"><Counter target={st.n} suffix={st.s} /></span>
-                <span className="hstat-label">{st.label}</span>
-              </div>
-            ))}
-          </div>
+          </FadeIn>
         </div>
 
         {/* Scroll indicator */}

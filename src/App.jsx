@@ -6,6 +6,7 @@ import Home from './pages/Home'
 import Concept from './pages/Concept'
 import CoursCollectifs from './pages/CoursCollectifs'
 import Salles from './pages/Salles'
+import SalleVille from './pages/SalleVille'
 import Coaching from './pages/Coaching'
 import Abonnements from './pages/Abonnements'
 import Contact from './pages/Contact'
@@ -71,6 +72,7 @@ function AppRoutes() {
         <Route path="/concept"          element={<Concept />} />
         <Route path="/cours-collectifs" element={<CoursCollectifs />} />
         <Route path="/salles"           element={<Salles />} />
+        <Route path="/salles/:ville"    element={<SalleVille />} />
         <Route path="/coaching"         element={<Coaching />} />
         <Route path="/abonnements"      element={<Abonnements />} />
         <Route path="/contact"          element={<Contact />} />
