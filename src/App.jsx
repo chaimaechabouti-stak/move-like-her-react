@@ -28,6 +28,7 @@ import AdminCours from './admin/AdminCours'
 import AdminUtilisateurs from './admin/AdminUtilisateurs'
 import AdminInscriptions from './admin/AdminInscriptions'
 import AdminContacts from './admin/AdminContacts'
+import AdminDemandes from './admin/AdminDemandes'
 
 import ScrollToTop, { ScrollReset } from './components/ScrollToTop'
 import useReveal from './hooks/useReveal'
@@ -89,6 +90,7 @@ function AppRoutes() {
           <Route path="utilisateurs"  element={<AdminUtilisateurs />} />
           <Route path="inscriptions"  element={<AdminInscriptions />} />
           <Route path="contacts"      element={<AdminContacts />} />
+          <Route path="demandes"      element={<AdminDemandes />} />
         </Route>
 
         <Route path="/paiement/succes" element={<PaiementSucces />} />

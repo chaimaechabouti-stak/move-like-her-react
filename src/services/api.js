@@ -97,6 +97,11 @@ export const contact = {
   envoyer: (data) => post('/contact', data),
 }
 
+// ─── Demandes d'inscription (formulaire Home) ─────────────────────
+export const demandes = {
+  envoyer: (data) => post('/demandes', data),
+}
+
 // ─── Stripe ──────────────────────────────────────────────────────
 export const stripe = {
   createCheckout: (data)       => post('/stripe/checkout', data),
@@ -155,6 +160,11 @@ export const admin = {
   contacts:       ()           => get('/admin/contacts'),
   updateContact:  (id, data)   => request('PUT',    `/admin/contacts/${id}`, data),
   deleteContact:  (id)         => request('DELETE', `/admin/contacts/${id}`),
+
+  // Demandes d'inscription
+  demandes:       ()           => get('/admin/demandes'),
+  updateDemande:  (id, data)   => request('PUT',    `/admin/demandes/${id}`, data),
+  deleteDemande:  (id)         => request('DELETE', `/admin/demandes/${id}`),
 }
 
 // ─── Helpers token ───────────────────────────────────────────────

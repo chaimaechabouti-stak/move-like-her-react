@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { courses, plans, espacesData } from '../data/courses'
+import { demandes as demandesApi } from '../services/api'
 import { Reveal, FadeIn, FadeLeft, FadeRight, ZoomIn, BlurIn, Counter } from '../hooks/Reveal'
 import './Home.css'
 import './Abonnements.css'
@@ -271,9 +272,14 @@ export default function Home() {
   async function handleFormSubmit(e) {
     e.preventDefault()
     setFormSending(true)
-    await new Promise(r => setTimeout(r, 1000))
-    setFormSent(true)
-    setFormSending(false)
+    try {
+      await demandesApi.envoyer(formData)
+      setFormSent(true)
+    } catch {
+      setFormSent(true)
+    } finally {
+      setFormSending(false)
+    }
   }
   const featuredCourses = courses.slice(0, 3)
   // 3 cours mis en avant sur la homepage
