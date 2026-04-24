@@ -150,6 +150,11 @@ export const admin = {
 
   // Inscriptions
   inscriptions: (params = {}) => get(`/admin/inscriptions?${new URLSearchParams(params)}`),
+
+  // Contacts
+  contacts:       ()           => get('/admin/contacts'),
+  updateContact:  (id, data)   => request('PUT',    `/admin/contacts/${id}`, data),
+  deleteContact:  (id)         => request('DELETE', `/admin/contacts/${id}`),
 }
 
 // ─── Helpers token ───────────────────────────────────────────────
