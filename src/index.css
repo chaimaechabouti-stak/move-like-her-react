@@ -85,6 +85,10 @@ button { cursor: pointer; font-family: inherit; }
 
 .container { max-width: 1200px; margin: 0 auto; padding: 0 1.5rem; }
 
+/* Pages sans hero plein écran → laisser de la place pour la navbar transparente */
+.profil-page,
+.stats-page { padding-top: 76px; }
+
 .btn-primary {
   display: inline-flex; align-items: center; gap: 0.5rem;
   background: var(--pink-500); color: white;

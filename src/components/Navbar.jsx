@@ -99,15 +99,12 @@ export default function Navbar() {
     return () => clearTimeout(t)
   }, [pathname])
 
-  const darkPages = ['/', '/concept', '/cours-collectifs', '/salles', '/coaching', '/abonnements', '/contact', '/dashboard']
-  const isAlwaysDark = darkPages.includes(pathname)
-
   return (
     <>
     {mapOpen && <MapModal onClose={() => setMapOpen(false)} />}
     <nav
       ref={navRef}
-      className={`navbar ${scrolled || isAlwaysDark ? 'scrolled' : ''}`}
+      className={`navbar ${scrolled ? 'scrolled' : ''}`}
       role="navigation"
       aria-label="Navigation principale"
     >
