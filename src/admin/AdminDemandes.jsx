@@ -11,6 +11,7 @@ export default function AdminDemandes() {
   const [search, setSearch]     = useState('')
   const [selected, setSelected] = useState(null)
   const [updating, setUpdating] = useState(null)
+  const [toast, setToast] = useState(null)
 
   const load = () => {
     setLoading(true)
@@ -32,9 +33,13 @@ export default function AdminDemandes() {
   const updateStatut = async (id, statut) => {
     setUpdating(id)
     try {
-      await admin.updateDemande(id, { statut })
+      const res = await admin.updateDemande(id, { statut })
       setList(l => l.map(d => d.id === id ? { ...d, statut } : d))
       if (selected?.id === id) setSelected(s => ({ ...s, statut }))
+      if (statut === 'inscrit') {
+        setToast({ msg: `Utilisateur créé et inscription activée !`, type: 'success' })
+        setTimeout(() => setToast(null), 4000)
+      }
     } finally {
       setUpdating(null)
     }
@@ -51,6 +56,12 @@ export default function AdminDemandes() {
 
   return (
     <div className="adm-page">
+      {toast && (
+        <div className={`adm-toast adm-toast-${toast.type}`}>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+          {toast.msg}
+        </div>
+      )}
       <div className="adm-page-header">
         <div>
           <h1 className="adm-page-title">Demandes d'inscription</h1>
