@@ -24,9 +24,7 @@ body.admin-page .navbar .nav-container {
   max-width: 100% !important;
   padding: 0 24px !important;
 }
-body.admin-page .navbar .nav-links,
-body.admin-page .navbar .nav-location,
-body.admin-page .navbar .burger {
+body.admin-page .navbar .nav-location {
   display: none !important;
 }
 
@@ -133,6 +131,27 @@ body.admin-page .navbar .burger {
 }
 .adm-nav-icon svg { width: 18px; height: 18px; }
 .adm-nav-label { flex: 1; }
+.adm-nav-badge {
+  background: #e91e8c;
+  color: white;
+  font-size: .62rem;
+  font-weight: 800;
+  min-width: 18px;
+  height: 18px;
+  border-radius: 9px;
+  padding: 0 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  box-shadow: 0 2px 8px rgba(233,30,140,.4);
+  flex-shrink: 0;
+  animation: adPulseBadge 2s ease-in-out infinite;
+}
+@keyframes adPulseBadge {
+  0%,100% { box-shadow: 0 2px 8px rgba(233,30,140,.4); }
+  50%      { box-shadow: 0 2px 14px rgba(233,30,140,.7); }
+}
 
 /* Déconnexion */
 .adm-sidebar-logout {

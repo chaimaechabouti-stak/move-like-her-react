@@ -2619,3 +2619,100 @@
 .inscri-success-icon svg { width: 32px; height: 32px; stroke: white; }
 .inscri-success h3 { font-size: 1.5rem; font-weight: 900; color: white; margin: 0; }
 .inscri-success p { font-size: 0.9rem; color: rgba(255,255,255,0.6); line-height: 1.75; max-width: 380px; margin: 0; }
+
+/* ═══════════════════════════════════════
+   DARK MODE OVERRIDES
+   ═══════════════════════════════════════ */
+
+/* Features scroll section */
+[data-theme="dark"] .features-scroll-section { background: #0f0c12; }
+[data-theme="dark"] .fs-header .section-title { color: #f0e6ec; }
+[data-theme="dark"] .fs-header .section-subtitle { color: #9a7a8a; }
+[data-theme="dark"] .sb-row { border-top-color: rgba(233,30,140,0.12); background: #0f0c12; }
+[data-theme="dark"] .sb-title { color: #f0e6ec; }
+[data-theme="dark"] .sb-desc { color: #9a7a8a; }
+[data-theme="dark"] .sb-check-item { color: #c8a8b8; }
+[data-theme="dark"] .ssv2-espaces-title { color: #f0e6ec; }
+[data-theme="dark"] .ssv2-espaces-sub { color: #9a7a8a; }
+
+/* Stats band */
+[data-theme="dark"] .stats-band {
+  background: #0f0c12;
+  border-top-color: rgba(233,30,140,0.15);
+  border-bottom-color: rgba(233,30,140,0.15);
+}
+[data-theme="dark"] .stat-band-label { color: #f0e6ec; }
+[data-theme="dark"] .stat-band-sub { color: #9a7a8a; }
+
+/* Salles showcase V2 */
+[data-theme="dark"] .salles-showcase-v2 { background: #0f0c12; }
+
+/* Plans V2 */
+[data-theme="dark"] .plans-section-v2 { background: #0f0c12; }
+[data-theme="dark"] .psv2-title { color: #f0e6ec !important; }
+[data-theme="dark"] .psv2-sub { color: #9a7a8a !important; }
+[data-theme="dark"] .psv2-tag { background: rgba(233,30,140,0.15) !important; color: #f48fb1 !important; }
+[data-theme="dark"] .psv2-card {
+  background: #1a1420;
+  border-color: rgba(233,30,140,0.2);
+  color: #f0e6ec;
+}
+[data-theme="dark"] .psv2-card:hover { background: #221830; border-color: rgba(233,30,140,0.45); }
+[data-theme="dark"] .psv2-card--highlight {
+  background: linear-gradient(145deg, rgba(233,30,140,0.18), rgba(194,24,91,0.1));
+  border-color: rgba(233,30,140,0.5);
+}
+[data-theme="dark"] .psv2-amount { color: #f0e6ec; }
+[data-theme="dark"] .psv2-name { color: #9a7a8a; }
+[data-theme="dark"] .psv2-feature-item { color: #c8a8b8; }
+[data-theme="dark"] .psv2-divider { background: rgba(233,30,140,0.15); }
+[data-theme="dark"] .psv2-cta--ghost { border-color: rgba(233,30,140,0.3); color: #c8a8b8; }
+[data-theme="dark"] .psv2-toggle-wrap { background: #1a1420; border-color: rgba(233,30,140,0.2); }
+[data-theme="dark"] .psv2-toggle-label { color: #9a7a8a; }
+[data-theme="dark"] .psv2-toggle-slider { background: rgba(233,30,140,0.25); }
+[data-theme="dark"] .psv2-guarantees { border-top-color: rgba(233,30,140,0.15); }
+[data-theme="dark"] .psv2-guarantee { color: #9a7a8a; }
+[data-theme="dark"] .psv2-guarantee-icon { background: rgba(233,30,140,0.12); }
+
+/* Testimonials */
+[data-theme="dark"] .testimonials-section { background: #0f0c12; }
+[data-theme="dark"] .testi-scroll-card {
+  background: #1a1420;
+  border-color: rgba(233,30,140,0.15);
+}
+[data-theme="dark"] .testi-scroll-text { color: #c8a8b8; }
+[data-theme="dark"] .testi-scroll-name { color: #f0e6ec; }
+[data-theme="dark"] .testi-scroll-city { color: #9a7a8a; }
+[data-theme="dark"] .testi-stat-dark {
+  background: #1a1420;
+  border-color: rgba(233,30,140,0.2);
+  color: #f0e6ec;
+}
+[data-theme="dark"] .testi-stat-white {
+  background: #1a1420;
+  border-color: rgba(233,30,140,0.15);
+  color: #f0e6ec;
+}
+
+/* Section titles globaux */
+[data-theme="dark"] .section-title { color: #f0e6ec; }
+[data-theme="dark"] .section-subtitle { color: #9a7a8a; }
+
+/* Salle tabs */
+[data-theme="dark"] .salle-tab { background: #1a1420; border-color: rgba(233,30,140,0.15); color: #f0e6ec; }
+[data-theme="dark"] .salle-tab:hover { background: #221830; border-color: rgba(233,30,140,0.35); }
+[data-theme="dark"] .salle-tab-city { color: #f0e6ec; }
+[data-theme="dark"] .salle-tab-addr { color: #9a7a8a; }
+
+/* Courses section */
+[data-theme="dark"] .courses-section { background: #0f0c12; }
+
+/* Stats band border fix */
+[data-theme="dark"] .stat-band-item { border-right-color: rgba(233,30,140,0.12); border-bottom-color: rgba(233,30,140,0.12); }
+
+/* ssv2-espaces section (inside salles-showcase-v2) */
+[data-theme="dark"] .ssv2-header .section-title { color: #f0e6ec; }
+[data-theme="dark"] .ssv2-header .section-subtitle { color: #9a7a8a; }
+
+/* Responsive stat-band border */
+[data-theme="dark"] .stat-band-item:nth-child(odd) { border-right-color: rgba(233,30,140,0.12); }

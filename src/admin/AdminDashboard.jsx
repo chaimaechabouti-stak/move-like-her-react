@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from 'react'
+import { useEffect, useState, useRef, useCallback } from 'react'
 import { Link } from 'react-router-dom'
 import { admin } from '../services/api'
 import {
@@ -119,14 +119,24 @@ function Sparkline({ data = [], color = '#e91e8c', w = 80, h = 32 }) {
 
 /* ═══════════════════════════════════════════════════════ */
 export default function AdminDashboard() {
-  const [stats,   setStats]   = useState(null)
-  const [loading, setLoading] = useState(true)
-  const [kpiRef,  kpiVis]     = useVisible()
-  const [ringRef, ringVis]    = useVisible()
-  const [barRef,  barVis]     = useVisible()
+  const [stats,    setStats]    = useState(null)
+  const [loading,  setLoading]  = useState(true)
+  const [contacts, setContacts] = useState([])
+  const [demandes, setDemandes] = useState([])
+  const [kpiRef,  kpiVis]  = useVisible()
+  const [ringRef, ringVis] = useVisible()
+  const [barRef,  barVis]  = useVisible()
 
   useEffect(() => {
     admin.stats().then(setStats).catch(console.error).finally(() => setLoading(false))
+    admin.contacts().then(res => {
+      const arr = Array.isArray(res) ? res : (res.data ?? [])
+      setContacts(arr.slice(0, 5))
+    }).catch(() => {})
+    admin.demandes().then(res => {
+      const arr = Array.isArray(res) ? res : (res.data ?? [])
+      setDemandes(arr.slice(0, 5))
+    }).catch(() => {})
   }, [])
 
   const today = new Date().toLocaleDateString('fr-FR', { weekday:'long', day:'numeric', month:'long', year:'numeric' })
@@ -486,6 +496,65 @@ export default function AdminDashboard() {
 
         </div>
       )}
+
+      {/* ── ACTIVITÉ RÉCENTE ── */}
+      <div className="adm-recent-grid">
+
+        {/* Derniers messages */}
+        <div className="adm-recent-card">
+          <div className="adm-recent-head">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#e91e8c" strokeWidth="1.7" style={{width:17,height:17,flexShrink:0}}><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            <h3 className="adm-recent-title">Derniers messages</h3>
+            <Link to="/admin/contacts" className="adm-recent-see-all">Voir tout</Link>
+          </div>
+          <div className="adm-recent-list">
+            {contacts.length === 0 && <p className="adm-empty">Aucun message.</p>}
+            {contacts.map(c => (
+              <div key={c.id} className="adm-recent-item">
+                <div className="adm-recent-avatar">{(c.nom?.[0] ?? 'M').toUpperCase()}</div>
+                <div className="adm-recent-info">
+                  <span className="adm-recent-name">{c.nom}</span>
+                  <span className="adm-recent-sub">{c.sujet || c.email}</span>
+                </div>
+                <div className="adm-recent-right">
+                  <span className={`adm-badge ${c.statut === 'nouveau' ? 'adm-badge-orange' : c.statut === 'lu' ? 'adm-badge-blue' : 'adm-badge-green'}`}>
+                    {c.statut === 'nouveau' ? 'Nouveau' : c.statut === 'lu' ? 'Lu' : 'Traité'}
+                  </span>
+                  <span className="adm-recent-date">{c.created_at ? new Date(c.created_at).toLocaleDateString('fr-FR', {day:'2-digit',month:'short'}) : ''}</span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Dernières demandes */}
+        <div className="adm-recent-card">
+          <div className="adm-recent-head">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#e91e8c" strokeWidth="1.7" style={{width:17,height:17,flexShrink:0}}><path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg>
+            <h3 className="adm-recent-title">Dernières demandes</h3>
+            <Link to="/admin/demandes" className="adm-recent-see-all">Voir tout</Link>
+          </div>
+          <div className="adm-recent-list">
+            {demandes.length === 0 && <p className="adm-empty">Aucune demande.</p>}
+            {demandes.map(d => (
+              <div key={d.id} className="adm-recent-item">
+                <div className="adm-recent-avatar">{(d.prenom?.[0] ?? 'M').toUpperCase()}</div>
+                <div className="adm-recent-info">
+                  <span className="adm-recent-name">{d.prenom} {d.name}</span>
+                  <span className="adm-recent-sub">{d.formule ? `Formule ${d.formule}` : d.email}</span>
+                </div>
+                <div className="adm-recent-right">
+                  <span className={`adm-badge ${d.statut === 'nouveau' ? 'adm-badge-orange' : d.statut === 'inscrit' ? 'adm-badge-green' : d.statut === 'contacte' ? 'adm-badge-blue' : 'adm-badge-gray'}`}>
+                    {d.statut === 'nouveau' ? 'Nouveau' : d.statut === 'inscrit' ? 'Inscrit' : d.statut === 'contacte' ? 'Contacté' : 'Annulé'}
+                  </span>
+                  <span className="adm-recent-date">{d.created_at ? new Date(d.created_at).toLocaleDateString('fr-FR', {day:'2-digit',month:'short'}) : ''}</span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+      </div>
 
       {/* ── DETAIL STATS TABLE ── */}
       <div className="adm-detail-grid">

@@ -16,7 +16,7 @@ export const courses = [
     duration: '30 min',
     level: 'Intermédiaire',
     calories: '400-600',
-    image: 'https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=600&q=75&fit=crop&auto=format',
+    image: 'https://tse4.mm.bing.net/th/id/OIP.cxkpozx3Rn7q59QifmvPbgHaEO?pid=Api&h=220&P=0',
     color: '#e91e8c',
   },
   {

@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom'
+import logoImg from '../assets/logo.jpg'
 import './NotFound.css'
 
 export default function NotFound() {
@@ -13,11 +14,7 @@ export default function NotFound() {
         <div className="nf-code">
           <span className="nf-4">4</span>
           <span className="nf-0">
-            <svg viewBox="0 0 80 80" fill="none" aria-hidden="true">
-              <circle cx="40" cy="40" r="36" stroke="#e91e8c" strokeWidth="3" opacity="0.3"/>
-              <circle cx="40" cy="40" r="24" stroke="#e91e8c" strokeWidth="2" opacity="0.5"/>
-              <circle cx="40" cy="40" r="10" fill="#e91e8c" opacity="0.8"/>
-            </svg>
+            <img src={logoImg} alt="" className="nf-logo-img" aria-hidden="true" />
           </span>
           <span className="nf-4">4</span>
         </div>

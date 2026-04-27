@@ -6,63 +6,27 @@
    HERO
    ════════════════════════════════════════ */
 .coaching-hero {
-  position: relative;
-  min-height: 70vh;
-  display: flex;
-  align-items: center;
-  overflow: hidden;
-}
-.coaching-hero-bg {
-  position: absolute;
-  inset: 0;
-  background-image: url('https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=1600&q=80&fit=crop');
-  background-size: cover;
-  background-position: center 40%;
-  z-index: 0;
-  animation: coachingBgDrift 14s ease-in-out infinite alternate;
-}
-@keyframes coachingBgDrift {
-  from { transform: scale(1.04); }
-  to   { transform: scale(1.08) translateX(-1%); }
+  position: relative; min-height: 420px;
+  display: flex; align-items: flex-end;
+  background-image: url('https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=1200&q=80&fit=crop');
+  background-size: cover; background-position: center;
 }
 .coaching-hero-overlay {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(135deg, rgba(10,3,8,0.85) 0%, rgba(30,5,20,0.7) 60%, rgba(10,3,8,0.5) 100%);
-  z-index: 1;
+  position: absolute; inset: 0;
+  background: linear-gradient(to bottom, rgba(10,3,8,0.4) 0%, rgba(10,3,8,0.75) 100%);
 }
-.coaching-hero-orb {
-  position: absolute;
-  border-radius: 50%;
-  filter: blur(80px);
-  z-index: 1;
-  pointer-events: none;
-}
-.coaching-hero-orb-1 { width: 550px; height: 350px; background: rgba(233,30,140,0.2); top: -60px; left: -80px; }
-.coaching-hero-orb-2 { width: 400px; height: 280px; background: rgba(194,24,91,0.13); bottom: 0; right: -60px; }
-
 .coaching-hero-content {
-  position: relative;
-  z-index: 2;
-  padding-top: 30px;
-  padding-bottom: 60px;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 1.5rem;
-  max-width: 680px;
+  position: relative; z-index: 1;
+  padding: 100px 0 48px; color: white;
+  display: flex; flex-direction: column; align-items: flex-start; gap: 1rem;
 }
 .coaching-hero-title {
-  font-size: clamp(2.4rem, 5.5vw, 4rem);
-  font-weight: 900;
-  color: white;
-  line-height: 1.1;
-  letter-spacing: -1px;
+  font-size: clamp(2rem, 5vw, 3.5rem); font-weight: 900;
+  line-height: 1.1; margin: 0 0 8px; color: white;
 }
+.coaching-hero-title span { color: #e91e8c; }
 .coaching-hero-desc {
-  font-size: clamp(0.92rem, 1.4vw, 1.05rem);
-  color: rgba(255,255,255,0.62);
-  line-height: 1.8;
+  font-size: 1rem; color: rgba(255,255,255,0.65); line-height: 1.75; margin: 0;
 }
 .coaching-hero-actions {
   display: flex;
@@ -309,6 +273,12 @@
 .tcv2-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 0.5rem; }
 .tcv2-name { font-size: 1.05rem; font-weight: 800; color: white; margin-bottom: 0.2rem; }
 .tcv2-role { font-size: 0.76rem; font-weight: 600; letter-spacing: 0.3px; }
+.tcv2-ville {
+  display: inline-flex; align-items: center; gap: 4px;
+  font-size: 0.72rem; color: rgba(255,255,255,0.5);
+  margin-top: 4px; font-weight: 500;
+}
+.tcv2-ville svg { width: 11px; height: 11px; flex-shrink: 0; }
 .tcv2-certif {
   display: flex;
   align-items: center;
@@ -433,6 +403,35 @@
 .cta-main-btn svg { width: 16px; height: 16px; transition: transform 0.2s; }
 .cta-main-btn:hover { transform: translateY(-3px); box-shadow: 0 14px 40px rgba(0,0,0,0.3); }
 .cta-main-btn:hover svg { transform: translateX(4px); }
+
+/* ════════════════════════════════════════
+   DARK MODE
+   ════════════════════════════════════════ */
+[data-theme="dark"] .coaching-types { background: #0f0c12; }
+[data-theme="dark"] .coaching-card { background: #1a1420; border-color: rgba(233,30,140,0.12); }
+[data-theme="dark"] .coa-title { color: #f0e6ec; }
+[data-theme="dark"] .coa-features li { color: #f0e6ec; }
+
+[data-theme="dark"] .temoignages-section { background: #0f0c12; }
+[data-theme="dark"] .temo-card { background: #1a1420; border-color: rgba(233,30,140,0.12); }
+[data-theme="dark"] .temo-text { color: #c0a8b8; }
+[data-theme="dark"] .temo-name { color: #f0e6ec; }
+
+/* Light mode overrides for team section (hardcoded dark colors) */
+[data-theme="light"] .team-section { background: #f5f0f4; }
+[data-theme="light"] .team-card-v2 { background: white; border-color: rgba(233,30,140,0.1); }
+[data-theme="light"] .team-card-v2:hover { border-color: rgba(233,30,140,0.3); }
+[data-theme="light"] .tcv2-name { color: #1a0a14; }
+[data-theme="light"] .tcv2-quote { color: #7a5a6a; border-left-color: rgba(233,30,140,0.4); }
+[data-theme="light"] .tcv2-course-pill { color: #7a5a6a; }
+[data-theme="light"] .team-card-v2:hover .tcv2-course-pill { color: #1a0a14; }
+[data-theme="light"] .tcv2-certif { color: #7a5a6a; background: rgba(0,0,0,0.04); border-color: rgba(0,0,0,0.08); }
+[data-theme="light"] .tcv2-ville { color: #9a7a8a; }
+[data-theme="light"] .team-header-sub { color: #7a5a6a; }
+
+[data-theme="light"] .process-section { background: #f5f0f4; }
+[data-theme="light"] .step-card { background: rgba(0,0,0,0.03); border-color: rgba(0,0,0,0.08); color: #1a0a14; }
+[data-theme="light"] .step-card p { color: #7a5a6a; }
 
 /* ════════════════════════════════════════
    RESPONSIVE

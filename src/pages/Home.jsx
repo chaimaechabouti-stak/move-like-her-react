@@ -139,7 +139,7 @@ const scrollBlocks = [
       'Des programmes variés et évolutifs',
       'Des séances fun et ludiques adaptées à tous les niveaux',
     ],
-    image: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=900&q=80&fit=crop',
+    image: '/images/gym2.png',
     imageFit: 'cover',
   },
   {
@@ -153,7 +153,7 @@ const scrollBlocks = [
       'Climatisation et ventilation optimales',
       'Matériel dernière génération renouvelé régulièrement',
     ],
-    image: 'https://tse3.mm.bing.net/th/id/OIP.FsI3AfOccoO0UH91ruhgEAHaHa?pid=Api&h=220&P=0',
+    image: '/images/gym3.png',
     imageFit: 'cover',
   },
   {
@@ -167,7 +167,7 @@ const scrollBlocks = [
       'Suivi personnalisé selon tes objectifs',
       'Ambiance bienveillante et motivante garantie',
     ],
-    image: 'https://images.unsplash.com/photo-1518611012118-696072aa579a?w=900&q=80&fit=crop',
+    image: '/images/gym4.png',
     imageFit: 'cover',
   },
   {
@@ -181,7 +181,7 @@ const scrollBlocks = [
       'Produits de soin bio mis à disposition',
       'Espace détente et lounge après l\'effort',
     ],
-    image: 'https://tse3.mm.bing.net/th/id/OIP.R-PH0UbPd8ireVllOUw8MQHaE7?pid=Api&h=220&P=0',
+    image: '/images/gym1.png',
     imageFit: 'cover',
   },
 ]

@@ -1,21 +1,11 @@
 import { useState, useEffect } from 'react'
 import { salles } from '../data/courses'
+import SallesMap from './SallesMap'
 import './MapModal.css'
-
-function mapUrl(s) {
-  const delta = 0.012
-  const bbox = `${s.lng - delta},${s.lat - delta},${s.lng + delta},${s.lat + delta}`
-  return `https://www.openstreetmap.org/export/embed.html?bbox=${bbox}&layer=mapnik&marker=${s.lat},${s.lng}`
-}
-
-function osmLink(s) {
-  return `https://www.openstreetmap.org/?mlat=${s.lat}&mlon=${s.lng}#map=15/${s.lat}/${s.lng}`
-}
 
 export default function MapModal({ onClose }) {
   const [active, setActive] = useState(salles[0])
 
-  /* Fermer avec Escape */
   useEffect(() => {
     const handler = (e) => { if (e.key === 'Escape') onClose() }
     document.addEventListener('keydown', handler)
@@ -76,33 +66,13 @@ export default function MapModal({ onClose }) {
             ))}
           </div>
 
-          {/* Carte */}
+          {/* Carte Leaflet */}
           <div className="mm-map-wrap">
-            <div className="mm-map-badge">
-              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/></svg>
-              {active.city} — {active.name}
-            </div>
-            <iframe
-              key={active.id}
-              title={`Carte ${active.city}`}
-              src={mapUrl(active)}
-              className="mm-iframe"
-              loading="lazy"
-              allowFullScreen
+            <SallesMap
+              salles={salles}
+              selectedId={active.id}
+              onSelect={s => setActive(s)}
             />
-            <a
-              href={osmLink(active)}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="mm-open-btn"
-            >
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
-                <polyline points="15 3 21 3 21 9"/>
-                <line x1="10" y1="14" x2="21" y2="3"/>
-              </svg>
-              Ouvrir dans Maps
-            </a>
           </div>
         </div>
       </div>

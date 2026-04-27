@@ -139,8 +139,13 @@ export default function AdminAbonnements() {
                   <input className="adm-input" type="number" value={form.prix_annuel} onChange={e => set('prix_annuel', e.target.value)} />
                 </div>
                 <div className="adm-field">
-                  <label className="adm-label">Couleur (ex: #e91e8c)</label>
-                  <input className="adm-input" value={form.couleur} onChange={e => set('couleur', e.target.value)} placeholder="#e91e8c" />
+                  <label className="adm-label">Couleur</label>
+                  <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+                    <input type="color" value={form.couleur || '#e91e8c'} onChange={e => set('couleur', e.target.value)}
+                      style={{ width: 40, height: 38, padding: 2, border: '1.5px solid #f2c4dc', borderRadius: 8, cursor: 'pointer', background: 'none' }} />
+                    <input className="adm-input" value={form.couleur} onChange={e => set('couleur', e.target.value)} placeholder="#e91e8c" style={{ flex: 1 }} />
+                    <span style={{ width: 24, height: 24, borderRadius: '50%', background: form.couleur || '#e91e8c', flexShrink: 0, border: '2px solid rgba(0,0,0,0.08)', boxShadow: `0 0 8px ${form.couleur || '#e91e8c'}50` }} />
+                  </div>
                 </div>
                 <div className="adm-field">
                   <label className="adm-label">Texte CTA</label>

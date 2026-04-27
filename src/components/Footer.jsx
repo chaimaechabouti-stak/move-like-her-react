@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import Logo from './Logo'
+import { demandes } from '../services/api'
 import './Logo.css'
 import './Footer.css'
 
@@ -38,7 +39,7 @@ function Newsletter() {
 
   const isValidEmail = (v) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
     if (!email.trim()) {
       setStatus('error'); setMsg('Saisis ton adresse e-mail.'); return
@@ -46,10 +47,16 @@ function Newsletter() {
     if (!isValidEmail(email)) {
       setStatus('error'); setMsg('Adresse e-mail invalide.'); return
     }
-    setStatus('success')
-    setMsg('Merci ! Tu es bien inscrite.')
-    setEmail('')
-    setTimeout(() => { setStatus(null); setMsg('') }, 4000)
+    try {
+      await demandes.envoyer({ email, source: 'newsletter' })
+      setStatus('success')
+      setMsg('Merci ! Tu es bien inscrite.')
+      setEmail('')
+      setTimeout(() => { setStatus(null); setMsg('') }, 4000)
+    } catch {
+      setStatus('error')
+      setMsg('Une erreur est survenue, réessaie.')
+    }
   }
 
   return (
@@ -196,7 +203,7 @@ export default function Footer() {
                     <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.63 3.4 2 2 0 0 1 3.6 1.22h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.8a16 16 0 0 0 6 6l.91-.91a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/>
                   </svg>
                 </div>
-                <span>+212 6XX XX XX XX</span>
+                <span>+212 0559320244</span>
               </li>
               <li>
                 <div className="fv2-contact-icon">
@@ -205,7 +212,7 @@ export default function Footer() {
                     <polyline points="22,6 12,13 2,6"/>
                   </svg>
                 </div>
-                <span>hello@movelikeher.ma</span>
+                <span>Salles@movelikeher.ma</span>
               </li>
               <li>
                 <div className="fv2-contact-icon">

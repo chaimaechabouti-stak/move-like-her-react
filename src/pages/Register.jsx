@@ -1,6 +1,8 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
+import Logo from '../components/Logo'
+import '../components/Logo.css'
 import './Login.css'
 
 export default function Register() {
@@ -54,29 +56,24 @@ export default function Register() {
         <div className="auth-panel-overlay" />
         <div className="auth-panel-content">
           <Link to="/" className="auth-brand">
-            <div className="auth-brand-icon">
-              <svg viewBox="0 0 40 40" fill="none">
-                <polygon points="20,4 36,34 4,34" fill="none" stroke="#e91e8c" strokeWidth="2.5"/>
-                <polygon points="20,12 30,28 10,28" fill="#e91e8c" opacity="0.85"/>
-              </svg>
-            </div>
-            <div>
-              <span className="auth-brand-name">MOVE LIKE HER</span>
-              <span className="auth-brand-tagline">Salle de sport · 100% féminin</span>
-            </div>
+            <Logo size={46} withText={true} />
           </Link>
           <div className="auth-panel-quote">
             <p>"Rejoins une communauté<br/>de femmes qui se dépassent."</p>
             <div className="auth-panel-perks">
               {[
-                { icon: <svg viewBox="0 0 24 24" fill="none" stroke="#e91e8c" strokeWidth="2.5" strokeLinecap="round"><polyline points="20 6 9 17 4 12"/></svg>, text: '1 semaine d\'essai offerte' },
-                { icon: <svg viewBox="0 0 24 24" fill="none" stroke="#e91e8c" strokeWidth="2.5" strokeLinecap="round"><polyline points="20 6 9 17 4 12"/></svg>, text: 'Accès à tous les cours collectifs' },
-                { icon: <svg viewBox="0 0 24 24" fill="none" stroke="#e91e8c" strokeWidth="2.5" strokeLinecap="round"><polyline points="20 6 9 17 4 12"/></svg>, text: 'Coaches certifiées & bienveillantes' },
-                { icon: <svg viewBox="0 0 24 24" fill="none" stroke="#e91e8c" strokeWidth="2.5" strokeLinecap="round"><polyline points="20 6 9 17 4 12"/></svg>, text: 'Espace 100% réservé aux femmes' },
-              ].map((p, i) => (
+                '1 semaine d\'essai offerte',
+                'Accès à tous les cours collectifs',
+                'Coaches certifiées & bienveillantes',
+                'Espace 100% réservé aux femmes',
+              ].map((text, i) => (
                 <div key={i} className="auth-perk">
-                  <span className="auth-perk-icon">{p.icon}</span>
-                  <span>{p.text}</span>
+                  <div className="auth-perk-check">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                      <polyline points="20 6 9 17 4 12"/>
+                    </svg>
+                  </div>
+                  <span>{text}</span>
                 </div>
               ))}
             </div>

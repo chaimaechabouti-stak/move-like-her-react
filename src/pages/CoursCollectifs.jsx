@@ -21,13 +21,45 @@ const categoryMap = {
 }
 
 const schedule = [
-  { day: 'Lundi',    slots: [{ time: '7h00', course: 'Yoga', color: '#f48fb1' }, { time: '12h00', course: 'HIIT', color: '#e91e8c' }, { time: '18h30', course: 'CAF', color: '#f06292' }] },
-  { day: 'Mardi',    slots: [{ time: '8h00', course: 'Cardio Boxe', color: '#c2185b' }, { time: '12h30', course: 'Full Body', color: '#e91e8c' }, { time: '19h00', course: 'Étirements', color: '#f48fb1' }] },
-  { day: 'Mercredi', slots: [{ time: '7h30', course: 'Step', color: '#c2185b' }, { time: '12h00', course: 'Cross Training', color: '#d81b60' }, { time: '18h00', course: 'Yoga', color: '#f48fb1' }] },
-  { day: 'Jeudi',    slots: [{ time: '7h00', course: 'HIIT', color: '#e91e8c' }, { time: '12h30', course: 'Abdos', color: '#d81b60' }, { time: '19h00', course: 'Bik\'in', color: '#f48fb1' }] },
-  { day: 'Vendredi', slots: [{ time: '8h00', course: 'Full Body', color: '#e91e8c' }, { time: '12h00', course: 'Cardio Training', color: '#c2185b' }, { time: '18h30', course: 'Étirements', color: '#f48fb1' }] },
-  { day: 'Samedi',   slots: [{ time: '9h00', course: 'Run', color: '#e91e8c' }, { time: '10h30', course: 'CAF', color: '#f06292' }, { time: '12h00', course: 'Yoga', color: '#f48fb1' }] },
+  { day: 'Lundi',    short: 'Lun', slots: [
+    { time: '7h00',  course: 'Yoga',          color: '#f48fb1', cat: 'Bien-être',     dur: '60 min' },
+    { time: '9h30',  course: 'HIIT',          color: '#e91e8c', cat: 'Cardio',        dur: '30 min' },
+    { time: '12h00', course: 'CAF',           color: '#f06292', cat: 'Renforcement',  dur: '45 min' },
+    { time: '18h30', course: 'Cardio Boxe',   color: '#c2185b', cat: 'Cardio',        dur: '45 min' },
+  ]},
+  { day: 'Mardi',    short: 'Mar', slots: [
+    { time: '8h00',  course: 'Cardio Boxe',   color: '#c2185b', cat: 'Cardio',        dur: '45 min' },
+    { time: '10h00', course: 'Étirements',    color: '#f48fb1', cat: 'Bien-être',     dur: '45 min' },
+    { time: '12h30', course: 'Full Body',     color: '#e91e8c', cat: 'Renforcement',  dur: '50 min' },
+    { time: '19h00', course: 'Zumba',         color: '#f06292', cat: 'Danse & Rythme',dur: '55 min' },
+  ]},
+  { day: 'Mercredi', short: 'Mer', slots: [
+    { time: '7h30',  course: 'Step',          color: '#c2185b', cat: 'Danse & Rythme',dur: '45 min' },
+    { time: '9h00',  course: 'Yoga',          color: '#f48fb1', cat: 'Bien-être',     dur: '60 min' },
+    { time: '12h00', course: 'Cross Training',color: '#d81b60', cat: 'Renforcement',  dur: '50 min' },
+    { time: '18h00', course: 'HIIT',          color: '#e91e8c', cat: 'Cardio',        dur: '30 min' },
+  ]},
+  { day: 'Jeudi',    short: 'Jeu', slots: [
+    { time: '7h00',  course: 'HIIT',          color: '#e91e8c', cat: 'Cardio',        dur: '30 min' },
+    { time: '10h00', course: 'CAF',           color: '#f06292', cat: 'Renforcement',  dur: '45 min' },
+    { time: '12h30', course: 'Abdos',         color: '#d81b60', cat: 'Renforcement',  dur: '30 min' },
+    { time: '19h00', course: "Bik'in",        color: '#f48fb1', cat: 'Cardio',        dur: '45 min' },
+  ]},
+  { day: 'Vendredi', short: 'Ven', slots: [
+    { time: '8h00',  course: 'Full Body',     color: '#e91e8c', cat: 'Renforcement',  dur: '50 min' },
+    { time: '10h30', course: 'Étirements',    color: '#f48fb1', cat: 'Bien-être',     dur: '45 min' },
+    { time: '12h00', course: 'Cardio Training',color:'#c2185b', cat: 'Cardio',        dur: '40 min' },
+    { time: '18h30', course: 'Zumba',         color: '#f06292', cat: 'Danse & Rythme',dur: '55 min' },
+  ]},
+  { day: 'Samedi',   short: 'Sam', slots: [
+    { time: '9h00',  course: 'Run',           color: '#e91e8c', cat: 'Cardio',        dur: '45 min' },
+    { time: '10h30', course: 'CAF',           color: '#f06292', cat: 'Renforcement',  dur: '45 min' },
+    { time: '12h00', course: 'Yoga',          color: '#f48fb1', cat: 'Bien-être',     dur: '60 min' },
+    { time: '14h00', course: 'Step',          color: '#c2185b', cat: 'Danse & Rythme',dur: '45 min' },
+  ]},
 ]
+
+const scheduleCategories = ['Tous', 'Cardio', 'Renforcement', 'Bien-être', 'Danse & Rythme']
 
 export default function CoursCollectifs() {
   const { user } = useAuth()
@@ -40,6 +72,9 @@ export default function CoursCollectifs() {
   const [reserving, setReserving] = useState(null)
   const [reserved, setReserved] = useState(new Set())
   const [toast, setToast] = useState(null)
+  const [planDay, setPlanDay] = useState('Tous')
+  const [planCat, setPlanCat] = useState('Tous')
+  const today = ['Dimanche','Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi'][new Date().getDay()]
 
   useEffect(() => {
     coursApi.list().then(data => {
@@ -105,18 +140,14 @@ export default function CoursCollectifs() {
 
       {/* ── HERO ── */}
       <section className="cours-hero">
-        <div className="cours-hero-bg" />
         <div className="cours-hero-overlay" />
-        <div className="cours-hero-orb cours-hero-orb-1" />
-        <div className="cours-hero-orb cours-hero-orb-2" />
-        <div className="container cours-hero-content">
-          <span className="tag">Cours collectifs</span>
-          <h1 className="cours-hero-title">Bouge en <span className="pink-text">communauté</span></h1>
-          <p className="cours-hero-desc">15 types de cours, des coaches passionnées, une ambiance unique. Pour toutes les envies, tous les niveaux.</p>
-          <div className="cours-hero-pills">
-            {['HIIT', 'Yoga', 'Cardio Boxe', 'Bik\'in', 'Cross Training'].map(p => (
-              <span key={p} className="cours-hero-pill">{p}</span>
-            ))}
+        <div className="cours-hero-content container">
+          <span className="sv-tag">Move Like Her · Cours Collectifs</span>
+          <h1 className="cours-hero-title">Bouge en <span>communauté</span></h1>
+          <div className="sv-hero-stats">
+            <div><strong>15+</strong><span>types de cours</span></div>
+            <div><strong>6j/7</strong><span>disponible</span></div>
+            <div><strong>100%</strong><span>féminin</span></div>
           </div>
         </div>
       </section>
@@ -203,22 +234,78 @@ export default function CoursCollectifs() {
           <div className="section-header">
             <span className="tag">Horaires</span>
             <h2 className="section-title">Planning de la <span className="pink-text">semaine</span></h2>
-            <p className="section-subtitle">Horaires indicatifs — varie selon les salles. Consulte l'app pour ton planning exact.</p>
+            <p className="section-subtitle">Horaires indicatifs — varie selon les salles.</p>
           </div>
-          <div className="planning-grid reveal reveal-delay-2">
-            {schedule.map(d => (
-              <div key={d.day} className="planning-day">
-                <div className="day-header">{d.day}</div>
-                <div className="day-slots">
-                  {d.slots.map(s => (
-                    <div key={s.time + s.course} className="slot" style={{ borderLeftColor: s.color }}>
-                      <span className="slot-time">{s.time}</span>
-                      <span className="slot-name">{s.course}</span>
-                    </div>
-                  ))}
-                </div>
+
+          {/* Filtres planning */}
+          <div className="planning-filters">
+            <div className="planning-filter-group">
+              <span className="planning-filter-label">Jour</span>
+              <div className="planning-filter-btns">
+                {['Tous', ...schedule.map(d => d.day)].map(d => (
+                  <button
+                    key={d}
+                    className={`plan-filter-btn ${planDay === d ? 'active' : ''} ${d === today ? 'today' : ''}`}
+                    onClick={() => setPlanDay(d)}
+                  >
+                    {d === 'Tous' ? 'Tous' : schedule.find(s => s.day === d)?.short || d}
+                    {d === today && <span className="plan-today-dot" />}
+                  </button>
+                ))}
               </div>
-            ))}
+            </div>
+            <div className="planning-filter-group">
+              <span className="planning-filter-label">Type</span>
+              <div className="planning-filter-btns">
+                {scheduleCategories.map(c => (
+                  <button
+                    key={c}
+                    className={`plan-filter-btn ${planCat === c ? 'active' : ''}`}
+                    onClick={() => setPlanCat(c)}
+                  >
+                    {c}
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* Grille planning */}
+          <div className="planning-grid-v2">
+            {schedule
+              .filter(d => planDay === 'Tous' || d.day === planDay)
+              .map(d => {
+                const slots = d.slots.filter(s => planCat === 'Tous' || s.cat === planCat)
+                if (!slots.length) return null
+                return (
+                  <div key={d.day} className={`planning-day-v2 ${d.day === today ? 'is-today' : ''}`}>
+                    <div className="pdv2-header">
+                      <span className="pdv2-day">{d.day}</span>
+                      {d.day === today && <span className="pdv2-today-badge">Aujourd'hui</span>}
+                      <span className="pdv2-count">{slots.length} cours</span>
+                    </div>
+                    <div className="pdv2-slots">
+                      {slots.map(s => (
+                        <div key={s.time + s.course} className="pdv2-slot" style={{ '--c': s.color }}>
+                          <div className="pdv2-slot-bar" style={{ background: s.color }} />
+                          <div className="pdv2-slot-body">
+                            <div className="pdv2-slot-top">
+                              <span className="pdv2-slot-time">{s.time}</span>
+                              <span className="pdv2-slot-cat" style={{ color: s.color, background: `${s.color}15` }}>{s.cat}</span>
+                            </div>
+                            <span className="pdv2-slot-name">{s.course}</span>
+                            <span className="pdv2-slot-dur">
+                              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                              {s.dur}
+                            </span>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )
+              })
+            }
           </div>
         </div>
       </section>

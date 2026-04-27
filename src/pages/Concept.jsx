@@ -61,23 +61,17 @@ export default function Concept() {
 
       {/* ── HERO ── */}
       <section className="concept-hero">
-        <div className="concept-hero-bg" />
         <div className="concept-hero-overlay" />
-        <div className="concept-hero-orb concept-hero-orb-1" />
-        <div className="concept-hero-orb concept-hero-orb-2" />
-        <div className="container concept-hero-content">
-          <span className="tag">Notre histoire</span>
+        <div className="concept-hero-content container">
+          <span className="sv-tag">Move Like Her · Notre Concept</span>
           <h1 className="concept-hero-title">
-            Une salle née <span className="pink-text">pour les femmes</span>
+            Une salle née <span>pour les femmes</span>
           </h1>
-          <p className="concept-hero-desc">
-            Move Like Her n'est pas juste une salle de sport. C'est un mouvement.<br />
-            Une philosophie. Un endroit où tu te retrouves, toi.
-          </p>
-          <Link to="/abonnements" className="btn-primary">Rejoindre le mouvement</Link>
-        </div>
-        <div className="concept-hero-scroll">
-          <div className="scroll-mouse"><div className="scroll-wheel" /></div>
+          <div className="sv-hero-stats">
+            <div><strong>100%</strong><span>féminin</span></div>
+            <div><strong>6</strong><span>villes</span></div>
+            <div><strong>5 000+</strong><span>membres actives</span></div>
+          </div>
         </div>
       </section>
 
@@ -116,7 +110,7 @@ export default function Concept() {
               {/* Image */}
               <div className="manifeste-img-wrap">
                 <img
-                  src="https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=700&q=80&fit=crop"
+                  src="/images/gym4.png"
                   alt="Move Like Her"
                   className="manifeste-img"
                 />

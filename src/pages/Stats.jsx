@@ -125,15 +125,27 @@ export default function Stats() {
         {/* KPIs */}
         <div className="stats-kpis">
           {[
-            { icon: '🏋️', label: 'Séances totales',    val: totalSeances,                  suffix: '',      color: '#e91e8c' },
-            { icon: '🔥', label: 'Calories brûlées',   val: totalCalories.toLocaleString(), suffix: ' kcal', color: '#ff5722', raw: true },
-            { icon: '⏱️', label: 'Minutes d\'effort',  val: totalHeures,                    suffix: ' min',  color: '#9c27b0' },
-            { icon: '📅', label: 'Jours membre',       val: joursActif,                     suffix: ' j',    color: '#00bcd4' },
+            {
+              icon: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M6.5 6.5h11M6.5 17.5h11M4 12h16M12 4v16" strokeLinecap="round"/></svg>,
+              label: 'Séances totales', val: totalSeances, suffix: '', color: '#e91e8c'
+            },
+            {
+              icon: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M12 2c0 0-6 4.5-6 9a6 6 0 0012 0c0-4.5-6-9-6-9z"/><path d="M12 12c0 0-2.5 1.5-2.5 3a2.5 2.5 0 005 0c0-1.5-2.5-3-2.5-3z" fill="currentColor" stroke="none" opacity=".5"/></svg>,
+              label: 'Calories brûlées', val: totalCalories.toLocaleString(), suffix: ' kcal', color: '#ff5722', raw: true
+            },
+            {
+              icon: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>,
+              label: 'Minutes d\'effort', val: totalHeures, suffix: ' min', color: '#9c27b0'
+            },
+            {
+              icon: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>,
+              label: 'Jours membre', val: joursActif, suffix: 'j', color: '#00bcd4'
+            },
           ].map((k, i) => (
             <div key={i} className="stats-kpi" style={{ '--kc': k.color }}>
               <div className="stats-kpi-icon">{k.icon}</div>
               <div className="stats-kpi-body">
-                <span className="stats-kpi-val">{k.raw ? k.val : k.val}{k.suffix}</span>
+                <span className="stats-kpi-val">{k.val}{k.suffix}</span>
                 <span className="stats-kpi-label">{k.label}</span>
               </div>
               <div className="stats-kpi-glow" />

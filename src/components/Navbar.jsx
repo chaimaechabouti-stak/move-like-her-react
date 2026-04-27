@@ -4,6 +4,7 @@ import Logo from './Logo'
 import MapModal from './MapModal'
 import { useAuth } from '../context/AuthContext'
 import { useTheme } from '../context/ThemeContext'
+import { abonnements as abosApi } from '../services/api'
 import './Logo.css'
 import './Navbar.css'
 
@@ -22,6 +23,14 @@ export default function Navbar() {
   const [dropdownOpen, setDropdownOpen] = useState(false)
   const [mapOpen, setMapOpen] = useState(false)
   const [installPrompt, setInstallPrompt] = useState(null)
+  const [aboAlert, setAboAlert] = useState(false)
+
+  const { pathname } = useLocation()
+  const navigate = useNavigate()
+  const navRef = useRef(null)
+  const dropdownRef = useRef(null)
+  const { user, logout } = useAuth()
+  const { dark, toggle } = useTheme()
 
   useEffect(() => {
     const handler = (e) => { e.preventDefault(); setInstallPrompt(e) }
@@ -29,18 +38,23 @@ export default function Navbar() {
     return () => window.removeEventListener('beforeinstallprompt', handler)
   }, [])
 
+  useEffect(() => {
+    if (!user || user.role !== 'membre') return
+    abosApi.monAbonnement()
+      .then(ins => {
+        if (!ins?.date_fin) return
+        const jours = Math.ceil((new Date(ins.date_fin) - new Date()) / (1000 * 60 * 60 * 24))
+        setAboAlert(jours >= 0 && jours <= 7)
+      })
+      .catch(() => {})
+  }, [user])
+
   const handleInstall = async () => {
     if (!installPrompt) return
     installPrompt.prompt()
     await installPrompt.userChoice
     setInstallPrompt(null)
   }
-  const { pathname } = useLocation()
-  const navigate = useNavigate()
-  const navRef = useRef(null)
-  const dropdownRef = useRef(null)
-  const { user, logout } = useAuth()
-  const { dark, toggle } = useTheme()
 
   const handleLogout = async () => {
     setDropdownOpen(false)
@@ -159,11 +173,13 @@ export default function Navbar() {
                 onClick={() => setDropdownOpen(s => !s)}
                 aria-expanded={dropdownOpen}
               >
-                <span className="nav-user-avatar">
-                  {`${user.prenom?.[0] ?? ''}${user.name?.[0] ?? ''}`.toUpperCase() || 'M'}
+                <span className="nav-user-avatar-wrap">
+                  <span className="nav-user-avatar">
+                    {`${user.prenom?.[0] ?? ''}${user.name?.[0] ?? ''}`.toUpperCase() || 'M'}
+                  </span>
+                  {aboAlert && <span className="nav-user-alert" title="Abonnement bientôt expiré" />}
                 </span>
-                {user.prenom ?? user.name}
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" style={{width:12,height:12,marginLeft:2,transition:'transform .2s',transform: dropdownOpen ? 'rotate(180deg)' : 'none'}}>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" style={{width:11,height:11,transition:'transform .2s',transform: dropdownOpen ? 'rotate(180deg)' : 'none', opacity:0.6}}>
                   <polyline points="6 9 12 15 18 9"/>
                 </svg>
               </button>

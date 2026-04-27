@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { NavLink, Outlet, useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
+import { admin } from '../services/api'
 import Navbar from '../components/Navbar'
 import './AdminLayout.css'
 
@@ -104,6 +105,18 @@ export default function AdminLayout() {
   const { user, logout } = useAuth()
   const navigate = useNavigate()
   const [sidebarOpen, setSidebarOpen] = useState(false)
+  const [badges, setBadges] = useState({ contacts: 0, demandes: 0 })
+
+  useEffect(() => {
+    Promise.all([admin.contacts(), admin.demandes()]).then(([c, d]) => {
+      const ca = Array.isArray(c) ? c : (c.data ?? [])
+      const da = Array.isArray(d) ? d : (d.data ?? [])
+      setBadges({
+        contacts: ca.filter(x => x.statut === 'nouveau').length,
+        demandes: da.filter(x => x.statut === 'nouveau').length,
+      })
+    }).catch(() => {})
+  }, [])
 
   /* Ajoute une classe sur le body pour que la navbar s'étende sur toute la largeur */
   useEffect(() => {
@@ -140,18 +153,24 @@ export default function AdminLayout() {
           </div>
 
           <nav className="adm-nav">
-            {NAV.map(item => (
-              <NavLink
-                key={item.to}
-                to={item.to}
-                end={item.end}
-                className={({ isActive }) => `adm-nav-link ${isActive ? 'active' : ''}`}
-                onClick={() => setSidebarOpen(false)}
-              >
-                <span className="adm-nav-icon">{item.icon}</span>
-                <span className="adm-nav-label">{item.label}</span>
-              </NavLink>
-            ))}
+            {NAV.map(item => {
+              const badge = item.to === '/admin/contacts' ? badges.contacts
+                          : item.to === '/admin/demandes' ? badges.demandes
+                          : 0
+              return (
+                <NavLink
+                  key={item.to}
+                  to={item.to}
+                  end={item.end}
+                  className={({ isActive }) => `adm-nav-link ${isActive ? 'active' : ''}`}
+                  onClick={() => setSidebarOpen(false)}
+                >
+                  <span className="adm-nav-icon">{item.icon}</span>
+                  <span className="adm-nav-label">{item.label}</span>
+                  {badge > 0 && <span className="adm-nav-badge">{badge}</span>}
+                </NavLink>
+              )
+            })}
           </nav>
 
           <button className="adm-sidebar-logout" onClick={handleLogout}>

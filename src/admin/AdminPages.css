@@ -100,7 +100,7 @@
   gap: 12px;
   padding: 16px 22px;
   border-bottom: 1.5px solid #fce4f0;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   background: #fffafe;
 }
 
@@ -115,7 +115,7 @@
   display: flex;
   gap: 10px;
   align-items: center;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
 }
 
 /* ── Search ── */
@@ -488,6 +488,10 @@
 }
 
 /* ── Responsive ── */
+@media (max-width: 700px) {
+  .adm-section-head { flex-wrap: wrap; }
+  .adm-section-actions { flex-wrap: wrap; }
+}
 @media (max-width: 600px) {
   .adm-form-grid { grid-template-columns: 1fr; }
   .adm-form-grid .adm-field-full { grid-column: 1; }

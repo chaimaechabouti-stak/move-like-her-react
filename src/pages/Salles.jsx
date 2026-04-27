@@ -2,19 +2,8 @@ import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { salles as sallesApi } from '../services/api'
 import { SkeletonGrid } from '../components/Skeleton'
+import SallesMap from '../components/SallesMap'
 import './Salles.css'
-
-/* OpenStreetMap embed URL pour une salle */
-function mapUrl(s) {
-  const delta = 0.012
-  const bbox = `${s.lng - delta},${s.lat - delta},${s.lng + delta},${s.lat + delta}`
-  return `https://www.openstreetmap.org/export/embed.html?bbox=${bbox}&layer=mapnik&marker=${s.lat},${s.lng}`
-}
-
-/* URL pour "Voir sur la carte" */
-function osmLink(s) {
-  return `https://www.openstreetmap.org/?mlat=${s.lat}&mlon=${s.lng}#map=15/${s.lat}/${s.lng}`
-}
 
 const services = [
   { icon: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M6.5 6.5h11M6.5 17.5h11M4 12h16M12 4v16" strokeLinecap="round"/></svg>, title: 'Zone Cardio', desc: 'Tapis, vélos, elliptiques — tout pour brûler des calories.' },
@@ -72,21 +61,15 @@ export default function Salles() {
 
       {/* ── HERO ── */}
       <section className="salles-hero">
-        <div className="salles-hero-bg" />
         <div className="salles-hero-overlay" />
-        <div className="salles-hero-orb salles-hero-orb-1" />
-        <div className="salles-hero-orb salles-hero-orb-2" />
-        <div className="container salles-hero-content">
-          <span className="tag">Nos salles</span>
-          <h1 className="salles-hero-title">Trouve ta salle <span className="pink-text">Move Like Her</span></h1>
-          <p className="salles-hero-desc">6 clubs au Maroc, ouverts 7j/7. Des espaces modernes, équipés et 100% féminins.</p>
-          <div className="salles-hero-stats">
-            {[{ n: '6', l: 'Clubs au Maroc' }, { n: '7j/7', l: 'Ouvert' }, { n: '100%', l: 'Féminin' }, { n: '5000+', l: 'Membres' }].map(s => (
-              <div key={s.l} className="sh-stat">
-                <span className="sh-stat-val">{s.n}</span>
-                <span className="sh-stat-lab">{s.l}</span>
-              </div>
-            ))}
+        <div className="salles-hero-content container">
+          <span className="sv-tag">Move Like Her · Nos Salles</span>
+          <h1 className="salles-hero-title">Trouve ta salle <span>Move Like Her</span></h1>
+          <div className="sv-hero-stats">
+            <div><strong>6</strong><span>clubs au Maroc</span></div>
+            <div><strong>7j/7</strong><span>ouvert</span></div>
+            <div><strong>100%</strong><span>féminin</span></div>
+            <div><strong>5000+</strong><span>membres</span></div>
           </div>
         </div>
       </section>
@@ -151,8 +134,8 @@ export default function Salles() {
                       <span key={sv} className="salle-tag">{sv}</span>
                     ))}
                   </div>
-                  <Link to="/abonnements" className="salle-btn">
-                    S'inscrire ici
+                  <Link to={`/salles/${s.city.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '')}`} className="salle-btn">
+                    Découvrir cette salle
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
                       <path d="M5 12h14M12 5l7 7-7 7" strokeLinecap="round" strokeLinejoin="round"/>
                     </svg>
@@ -164,21 +147,22 @@ export default function Salles() {
         </div>
       </section>
 
-      {/* ── CARTE ── */}
+      {/* ── CARTE LEAFLET ── */}
       <section className="salles-map-section">
         <div className="container">
           <div className="section-header">
             <span className="tag">Localisation</span>
             <h2 className="section-title">Trouve-nous <span className="pink-text">sur la carte</span></h2>
+            <p className="section-subtitle">Clique sur un marqueur pour voir les infos de la salle.</p>
           </div>
 
-          {activeMap && <div className="salles-map-layout">
-            {/* Liste des salles cliquables */}
+          <div className="salles-map-layout">
+            {/* Liste cliquable */}
             <div className="salles-map-list">
               {salles.map(s => (
                 <button
                   key={s.id}
-                  className={`salles-map-item ${activeMap.id === s.id ? 'active' : ''}`}
+                  className={`salles-map-item ${activeMap?.id === s.id ? 'active' : ''}`}
                   onClick={() => setActiveMap(s)}
                 >
                   <div className="smi-pin">
@@ -195,38 +179,17 @@ export default function Salles() {
               ))}
             </div>
 
-            {/* Carte iframe */}
+            {/* Carte Leaflet interactive */}
             <div className="salles-map-frame-wrap">
-              <div className="salles-map-badge">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/>
-                  <circle cx="12" cy="9" r="2.5"/>
-                </svg>
-                {activeMap.city} — {activeMap.name}
-              </div>
-              <iframe
-                key={activeMap.id}
-                title={`Carte ${activeMap.city}`}
-                src={mapUrl(activeMap)}
-                className="salles-map-iframe"
-                loading="lazy"
-                allowFullScreen
-              />
-              <a
-                href={osmLink(activeMap)}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="salles-map-open"
-              >
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
-                  <polyline points="15 3 21 3 21 9"/>
-                  <line x1="10" y1="14" x2="21" y2="3"/>
-                </svg>
-                Ouvrir dans Maps
-              </a>
+              {salles.length > 0 && (
+                <SallesMap
+                  salles={salles}
+                  selectedId={activeMap?.id}
+                  onSelect={s => setActiveMap(s)}
+                />
+              )}
             </div>
-          </div>}
+          </div>
         </div>
       </section>
 

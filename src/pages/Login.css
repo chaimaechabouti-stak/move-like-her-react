@@ -77,10 +77,12 @@
   display: flex; align-items: center; gap: 0.75rem;
   font-size: 0.9rem; color: rgba(255,255,255,0.85);
 }
-.auth-perk-icon {
-  flex-shrink: 0; display: flex; align-items: center;
+.auth-perk-check {
+  width: 22px; height: 22px; border-radius: 50%; flex-shrink: 0;
+  background: rgba(233,30,140,0.2); border: 1.5px solid rgba(233,30,140,0.4);
+  display: flex; align-items: center; justify-content: center; color: #e91e8c;
 }
-.auth-perk-icon svg { width: 16px; height: 16px; }
+.auth-perk-check svg { width: 12px; height: 12px; }
 
 /* ── Panneau droit — formulaire ── */
 .auth-panel-right {

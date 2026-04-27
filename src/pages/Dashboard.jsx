@@ -22,14 +22,19 @@ function CountUp({ end, duration = 1200, suffix = '' }) {
 }
 
 /* Hook intersection observer pour les animations d'entrée */
-function useVisible(threshold = 0.15) {
+function useVisible() {
   const ref = useRef(null)
   const [visible, setVisible] = useState(false)
   useEffect(() => {
-    const obs = new IntersectionObserver(([e]) => { if (e.isIntersecting) { setVisible(true); obs.disconnect() } }, { threshold })
+    const obs = new IntersectionObserver(
+      ([e]) => { if (e.isIntersecting) { setVisible(true); obs.disconnect() } },
+      { threshold: 0, rootMargin: '0px 0px 60px 0px' }
+    )
     if (ref.current) obs.observe(ref.current)
-    return () => obs.disconnect()
-  }, [threshold])
+    // fallback: si l'élément est déjà dans le viewport au mount
+    const t = setTimeout(() => setVisible(true), 800)
+    return () => { obs.disconnect(); clearTimeout(t) }
+  }, [])
   return [ref, visible]
 }
 
@@ -89,26 +94,28 @@ export default function Dashboard() {
   const dateFin   = inscription?.date_fin   ? new Date(inscription.date_fin)   : null
   const dateDebut = inscription?.date_debut ? new Date(inscription.date_debut) : null
 
-  const jours = dateFin
-    ? Math.max(0, Math.ceil((dateFin - new Date()) / (1000 * 60 * 60 * 24)))
-    : 0
+  const joursRaw = dateFin
+    ? Math.ceil((dateFin - new Date()) / (1000 * 60 * 60 * 24))
+    : null
+  const jours   = joursRaw !== null ? Math.max(0, joursRaw) : 0
+  const expired = dateFin && joursRaw !== null && joursRaw <= 0
 
   const progressPct = dateFin && dateDebut && dateFin > dateDebut
     ? Math.min(100, Math.max(0, Math.round(((new Date() - dateDebut) / (dateFin - dateDebut)) * 100)))
     : 0
 
-  const statutAbo = inscription ? (jours <= 7 ? 'warn' : 'active') : 'none'
+  const statutAbo = inscription && !expired ? (jours <= 7 ? 'warn' : 'active') : 'none'
 
   /* Notifications intelligentes */
   const notifications = [
-    inscription && jours <= 7 && jours > 0 && {
+    inscription && !expired && jours <= 7 && jours > 0 && {
       id: 'exp-soon', type: 'warn',
       icon: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>,
       title: 'Abonnement bientôt expiré',
       msg: `Ton abonnement expire dans ${jours} jour${jours > 1 ? 's' : ''}. Renouvelle-le pour continuer.`,
       action: { label: 'Renouveler', to: '/abonnements' }
     },
-    inscription && jours === 0 && {
+    expired && {
       id: 'exp-today', type: 'error',
       icon: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>,
       title: 'Abonnement expiré',
@@ -133,24 +140,6 @@ export default function Dashboard() {
 
   return (
     <div className={`dash-page ${mounted ? 'is-mounted' : ''}`}>
-
-      {/* ── NOTIFICATIONS ── */}
-      {notifications.length > 0 && (
-        <div className="dash-notifs container">
-          {notifications.map(n => (
-            <div key={n.id} className={`dash-notif dash-notif--${n.type}`}>
-              <div className="dash-notif-icon">{n.icon}</div>
-              <div className="dash-notif-body">
-                <span className="dash-notif-title">{n.title}</span>
-                <span className="dash-notif-msg">{n.msg}</span>
-              </div>
-              {n.action && (
-                <Link to={n.action.to} className="dash-notif-btn">{n.action.label}</Link>
-              )}
-            </div>
-          ))}
-        </div>
-      )}
 
       {/* ── HERO ── */}
       <div className="dash-hero">
@@ -203,6 +192,24 @@ export default function Dashboard() {
             Déconnexion
           </button>
         </div>
+
+        {/* ── NOTIFICATIONS (inside hero, dark bg) ── */}
+        {notifications.length > 0 && (
+          <div className="dash-notifs container">
+            {notifications.map(n => (
+              <div key={n.id} className={`dash-notif dash-notif--${n.type}`}>
+                <div className="dash-notif-icon">{n.icon}</div>
+                <div className="dash-notif-body">
+                  <span className="dash-notif-title">{n.title}</span>
+                  <span className="dash-notif-msg">{n.msg}</span>
+                </div>
+                {n.action && (
+                  <Link to={n.action.to} className="dash-notif-btn">{n.action.label}</Link>
+                )}
+              </div>
+            ))}
+          </div>
+        )}
       </div>
 
       <div className="container dash-body">

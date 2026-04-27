@@ -6,91 +6,27 @@
    HERO — Concept
    ════════════════════════════════════════ */
 .concept-hero {
-  position: relative;
-  min-height: 70vh;
-  display: flex;
-  align-items: center;
-  overflow: hidden;
+  position: relative; min-height: 420px;
+  display: flex; align-items: flex-end;
+  background-image: url('https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=1200&q=80&fit=crop');
+  background-size: cover; background-position: center;
 }
-
-.concept-hero-bg {
-  position: absolute;
-  inset: 0;
-  background-image: url('https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=1600&q=80&fit=crop');
-  background-size: cover;
-  background-position: center 30%;
-  z-index: 0;
-  transform: scale(1.04);
-  animation: conceptHeroBgDrift 14s ease-in-out infinite alternate;
-}
-@keyframes conceptHeroBgDrift {
-  from { transform: scale(1.04) translateX(0); }
-  to   { transform: scale(1.08) translateX(-1.5%); }
-}
-
 .concept-hero-overlay {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    135deg,
-    rgba(10,3,8,0.82) 0%,
-    rgba(30,5,20,0.70) 50%,
-    rgba(10,3,8,0.55) 100%
-  );
-  z-index: 1;
+  position: absolute; inset: 0;
+  background: linear-gradient(to bottom, rgba(10,3,8,0.4) 0%, rgba(10,3,8,0.75) 100%);
 }
-
-.concept-hero-orb {
-  position: absolute;
-  border-radius: 50%;
-  filter: blur(80px);
-  z-index: 1;
-  pointer-events: none;
-}
-.concept-hero-orb-1 {
-  width: 600px; height: 400px;
-  background: rgba(233,30,140,0.18);
-  top: -80px; left: -100px;
-}
-.concept-hero-orb-2 {
-  width: 400px; height: 300px;
-  background: rgba(194,24,91,0.12);
-  bottom: 0; right: -80px;
-}
-
 .concept-hero-content {
-  position: relative;
-  z-index: 2;
-  padding-top: 30px;
-  padding-bottom: 60px;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 1.5rem;
-  max-width: 720px;
+  position: relative; z-index: 1;
+  padding: 100px 0 48px; color: white;
+  display: flex; flex-direction: column; align-items: flex-start; gap: 1rem;
 }
-
 .concept-hero-title {
-  font-size: clamp(2.6rem, 6vw, 4.5rem);
-  font-weight: 900;
-  color: white;
-  line-height: 1.1;
-  letter-spacing: -1px;
+  font-size: clamp(2rem, 5vw, 3.5rem); font-weight: 900;
+  line-height: 1.1; margin: 0 0 8px; color: white;
 }
-
+.concept-hero-title span { color: #e91e8c; }
 .concept-hero-desc {
-  font-size: clamp(0.95rem, 1.5vw, 1.1rem);
-  color: rgba(255,255,255,0.65);
-  line-height: 1.8;
-}
-
-.concept-hero-scroll {
-  position: absolute;
-  bottom: 2.5rem;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 2;
-  opacity: 0.4;
+  font-size: 1rem; color: rgba(255,255,255,0.65); line-height: 1.75; margin: 0;
 }
 
 /* MANIFESTE */

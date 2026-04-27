@@ -293,3 +293,120 @@
 @media (max-width: 900px) {
   .adm-charts-grid { grid-template-columns: 1fr; }
 }
+
+/* ══════════════════════════════════════ ACTIVITÉ RÉCENTE */
+.adm-recent-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.adm-recent-card {
+  background: #fff;
+  border-radius: 20px;
+  padding: 1.5rem;
+  border: 1px solid #fce4ec;
+  box-shadow: 0 2px 16px rgba(233,30,140,0.06);
+}
+
+.adm-recent-head {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin-bottom: 0;
+  padding-bottom: 14px;
+  border-bottom: 1px solid #fce4f0;
+}
+.adm-recent-title {
+  margin: 0;
+  font-size: .9rem;
+  font-weight: 800;
+  color: #2d1a24;
+  flex: 1;
+}
+.adm-recent-see-all {
+  margin-left: auto;
+  font-size: .75rem;
+  font-weight: 600;
+  color: #e91e8c;
+  text-decoration: none;
+  padding: 4px 12px;
+  border-radius: 20px;
+  border: 1px solid rgba(233,30,140,.2);
+  transition: all .2s;
+  white-space: nowrap;
+}
+.adm-recent-see-all:hover { background: rgba(233,30,140,.07); }
+
+.adm-recent-list {
+  display: flex;
+  flex-direction: column;
+  gap: .45rem;
+  margin-top: 1rem;
+}
+
+.adm-recent-item {
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+  padding: .6rem .8rem;
+  border-radius: 12px;
+  border: 1px solid transparent;
+  transition: background .18s, border-color .18s;
+}
+.adm-recent-item:hover {
+  background: rgba(233,30,140,.04);
+  border-color: rgba(233,30,140,.15);
+}
+
+.adm-recent-avatar {
+  width: 34px; height: 34px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #e91e8c, #c2185b);
+  color: #fff;
+  font-size: .72rem;
+  font-weight: 800;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+
+.adm-recent-info {
+  display: flex;
+  flex-direction: column;
+  gap: .1rem;
+  min-width: 0;
+  flex: 1;
+}
+.adm-recent-name {
+  font-size: .82rem;
+  font-weight: 700;
+  color: #2d1a24;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.adm-recent-sub {
+  font-size: .7rem;
+  color: #9c6b80;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.adm-recent-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: .2rem;
+  flex-shrink: 0;
+}
+.adm-recent-date {
+  font-size: .65rem;
+  color: #9c6b80;
+  font-weight: 500;
+}
+
+@media (max-width: 900px) {
+  .adm-recent-grid { grid-template-columns: 1fr; }
+}

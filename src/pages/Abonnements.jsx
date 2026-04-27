@@ -1,14 +1,18 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { abonnements as abosApi, stripe as stripeApi } from '../services/api'
+import { abonnements as abosApi, stripe as stripeApi, demandes } from '../services/api'
 import { useAuth } from '../context/AuthContext'
 import { useInView } from '../hooks/useInView'
 import './Abonnements.css'
 
-/* ── Plan card with scroll reveal ── */
+const PLAN_MEMBERS = [842, 1640, 528]
+const VILLES = ['Casablanca', 'Rabat', 'Marrakech', 'Tanger', 'Fès', 'Agadir']
+
+/* ── Plan card ── */
 function PlanCard({ plan: p, index: i, annual, planIcon, onPay, paying }) {
   const [ref, inView] = useInView(0.1)
   const variants = ['plan-reveal--left', 'plan-reveal--up', 'plan-reveal--right']
+  const membersCount = PLAN_MEMBERS[i] ?? 300
 
   return (
     <div
@@ -37,6 +41,14 @@ function PlanCard({ plan: p, index: i, annual, planIcon, onPay, paying }) {
         </div>
         {annual && <div className="plan-annual-note">Facturé annuellement</div>}
 
+        <div className="plan-members-count">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <circle cx="9" cy="7" r="4"/><path d="M3 21v-2a4 4 0 014-4h4a4 4 0 014 4v2"/>
+            <circle cx="17" cy="7" r="3"/><path d="M21 21v-2a3 3 0 00-2-2.83"/>
+          </svg>
+          <strong>{membersCount.toLocaleString('fr-MA')}</strong> membres actives
+        </div>
+
         <div className="plan-divider" />
 
         <ul className="plan-features-full">
@@ -56,17 +68,177 @@ function PlanCard({ plan: p, index: i, annual, planIcon, onPay, paying }) {
           disabled={paying === p.id}
         >
           {paying === p.id ? (
-            <>
-              <span className="plan-btn-spinner" />
-              Redirection…
-            </>
+            <><span className="plan-btn-spinner" />Redirection…</>
           ) : (
-            <>
-              {p.cta}
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M5 12h14M12 5l7 7-7 7" strokeLinecap="round" strokeLinejoin="round"/></svg>
-            </>
+            <>{p.cta}<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M5 12h14M12 5l7 7-7 7" strokeLinecap="round" strokeLinejoin="round"/></svg></>
           )}
         </button>
+      </div>
+    </div>
+  )
+}
+
+/* ── Modal paiement ── */
+function PayModal({ plan, annual, onClose, onConfirm, paying }) {
+  const { user } = useAuth()
+  const [step, setStep] = useState(1) // 1=infos, 2=confirmation
+  const [form, setForm] = useState({
+    prenom: user?.prenom || '',
+    name:   user?.name   || '',
+    email:  user?.email  || '',
+    telephone: '',
+    ville: '',
+  })
+  const [error, setError] = useState('')
+  const backdropRef = useRef(null)
+
+  const price = annual
+    ? (plan.priceAnn ? Math.round(plan.priceAnn / 12) : Math.round(plan.price * 0.8))
+    : plan.price
+
+  const totalPrice = annual
+    ? (plan.priceAnn || Math.round(plan.price * 0.8 * 12))
+    : plan.price
+
+  const set = (k, v) => setForm(f => ({ ...f, [k]: v }))
+
+  const handleStep1 = async (e) => {
+    e.preventDefault()
+    setError('')
+    if (!form.prenom || !form.name || !form.email) {
+      setError('Merci de remplir tous les champs obligatoires.')
+      return
+    }
+    try {
+      await demandes.envoyer({ ...form, source: 'abonnement', plan: plan.name })
+    } catch { /* silencieux */ }
+    setStep(2)
+  }
+
+  const handlePay = () => {
+    onConfirm(plan, annual)
+  }
+
+  return (
+    <div className="pay-modal-backdrop" ref={backdropRef} onClick={e => e.target === backdropRef.current && onClose()}>
+      <div className="pay-modal">
+
+        {/* Header */}
+        <div className="pay-modal-header">
+          <div className="pay-modal-plan-badge">
+            <span className="pay-modal-plan-name">{plan.name}</span>
+            <span className="pay-modal-plan-price">
+              {price} Dh<span>/mois</span>
+              {annual && <span className="pay-modal-annual-tag">Annuel −20%</span>}
+            </span>
+          </div>
+          <button className="pay-modal-close" onClick={onClose} aria-label="Fermer">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          </button>
+        </div>
+
+        {/* Étapes */}
+        <div className="pay-modal-steps">
+          <div className={`pay-modal-step ${step >= 1 ? 'active' : ''} ${step > 1 ? 'done' : ''}`}>
+            {step > 1
+              ? <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              : <span>1</span>
+            }
+            Tes informations
+          </div>
+          <div className="pay-modal-step-line" />
+          <div className={`pay-modal-step ${step >= 2 ? 'active' : ''}`}>
+            <span>2</span>
+            Paiement
+          </div>
+        </div>
+
+        {/* Étape 1 — Formulaire */}
+        {step === 1 && (
+          <form className="pay-modal-form" onSubmit={handleStep1} noValidate>
+            {error && (
+              <div className="pay-modal-error">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                {error}
+              </div>
+            )}
+            <div className="pay-modal-row">
+              <div className="pay-modal-field">
+                <label>Prénom *</label>
+                <input placeholder="Fatima" value={form.prenom} onChange={e => set('prenom', e.target.value)} />
+              </div>
+              <div className="pay-modal-field">
+                <label>Nom *</label>
+                <input placeholder="Alaoui" value={form.name} onChange={e => set('name', e.target.value)} />
+              </div>
+            </div>
+            <div className="pay-modal-field">
+              <label>Email *</label>
+              <input type="email" placeholder="ton@email.com" value={form.email} onChange={e => set('email', e.target.value)} />
+            </div>
+            <div className="pay-modal-row">
+              <div className="pay-modal-field">
+                <label>Téléphone</label>
+                <input type="tel" placeholder="+212 6XX XX XX XX" value={form.telephone} onChange={e => set('telephone', e.target.value)} />
+              </div>
+              <div className="pay-modal-field">
+                <label>Ville</label>
+                <select value={form.ville} onChange={e => set('ville', e.target.value)}>
+                  <option value="">Choisir…</option>
+                  {VILLES.map(v => <option key={v} value={v}>{v}</option>)}
+                </select>
+              </div>
+            </div>
+            <button type="submit" className="pay-modal-btn-primary">
+              Continuer vers le paiement
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M5 12h14M12 5l7 7-7 7" strokeLinecap="round" strokeLinejoin="round"/></svg>
+            </button>
+          </form>
+        )}
+
+        {/* Étape 2 — Confirmation */}
+        {step === 2 && (
+          <div className="pay-modal-confirm">
+            <div className="pay-modal-summary">
+              <div className="pay-modal-summary-row">
+                <span>Formule</span>
+                <strong>{plan.name}</strong>
+              </div>
+              <div className="pay-modal-summary-row">
+                <span>Fréquence</span>
+                <strong>{annual ? 'Annuelle' : 'Mensuelle'}</strong>
+              </div>
+              <div className="pay-modal-summary-row">
+                <span>Prix mensuel</span>
+                <strong>{price} Dh</strong>
+              </div>
+              {annual && (
+                <div className="pay-modal-summary-row pay-modal-summary-total">
+                  <span>Total facturé</span>
+                  <strong>{totalPrice} Dh / an</strong>
+                </div>
+              )}
+            </div>
+
+            <div className="pay-modal-secure">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+              Paiement 100% sécurisé via Stripe
+            </div>
+
+            <div className="pay-modal-actions">
+              <button className="pay-modal-btn-primary" onClick={handlePay} disabled={paying === plan.id}>
+                {paying === plan.id
+                  ? <><span className="plan-btn-spinner" />Redirection…</>
+                  : <>Payer maintenant <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg></>
+                }
+              </button>
+            </div>
+
+            <button className="pay-modal-back" onClick={() => setStep(1)}>
+              ← Modifier mes informations
+            </button>
+          </div>
+        )}
       </div>
     </div>
   )
@@ -93,7 +265,6 @@ const avantages = [
   { icon: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M18 20V10M12 20V4M6 20v-6"/></svg>, title: 'Bilan fitness offert', desc: 'Un bilan corporel à l\'inscription pour définir tes objectifs.' },
 ]
 
-/* Adapter API → format attendu par PlanCard */
 function toCard(a) {
   return {
     id:        a.id,
@@ -108,11 +279,13 @@ function toCard(a) {
 }
 
 export default function Abonnements() {
-  const [annual, setAnnual] = useState(false)
-  const [openFaq, setOpenFaq] = useState(null)
-  const [plans, setPlans] = useState([])
-  const [paying, setPaying] = useState(null)
+  const [annual, setAnnual]     = useState(false)
+  const [openFaq, setOpenFaq]   = useState(null)
+  const [plans, setPlans]       = useState([])
+  const [paying, setPaying]     = useState(null)
   const [payError, setPayError] = useState('')
+  const [modal, setModal]       = useState(null) // plan sélectionné
+
   const { user } = useAuth()
   const navigate = useNavigate()
 
@@ -123,7 +296,19 @@ export default function Abonnements() {
     }).catch(() => {})
   }, [])
 
-  const handlePay = async (plan, isAnnual) => {
+  // Bloque le scroll quand le modal est ouvert
+  useEffect(() => {
+    document.body.style.overflow = modal ? 'hidden' : ''
+    return () => { document.body.style.overflow = '' }
+  }, [modal])
+
+  const handleOpenModal = (plan, isAnnual) => {
+    if (!user) { navigate('/login?redirect=/abonnements'); return }
+    setPayError('')
+    setModal({ plan, annual: isAnnual })
+  }
+
+  const handleConfirmPay = async (plan, isAnnual) => {
     if (!user) { navigate('/login?redirect=/abonnements'); return }
     setPaying(plan.id)
     setPayError('')
@@ -142,24 +327,27 @@ export default function Abonnements() {
   return (
     <main className="page-abos">
 
+      {/* Modal paiement */}
+      {modal && (
+        <PayModal
+          plan={modal.plan}
+          annual={modal.annual}
+          paying={paying}
+          onClose={() => setModal(null)}
+          onConfirm={handleConfirmPay}
+        />
+      )}
+
       {/* ── HERO ── */}
       <section className="abos-hero">
-        <div className="abos-hero-bg" />
         <div className="abos-hero-overlay" />
-        <div className="abos-hero-orb abos-hero-orb-1" />
-        <div className="abos-hero-orb abos-hero-orb-2" />
-        <div className="container abos-hero-content">
-          <span className="tag">Tarifs</span>
-          <h1 className="abos-hero-title">Des formules <span className="pink-text">pour toutes</span></h1>
-          <p className="abos-hero-desc">Sans engagement, sans surprise. Choisis la formule qui te correspond et commence dès aujourd'hui.</p>
-          <div className="abos-toggle-wrap">
-            <span className={!annual ? 'abos-toggle-label active' : 'abos-toggle-label'}>Mensuel</span>
-            <button className={`abos-toggle-btn ${annual ? 'on' : ''}`} onClick={() => setAnnual(!annual)}>
-              <span className="abos-toggle-knob" />
-            </button>
-            <span className={annual ? 'abos-toggle-label active' : 'abos-toggle-label'}>
-              Annuel <span className="abos-saving">−20%</span>
-            </span>
+        <div className="abos-hero-content container">
+          <span className="sv-tag">Move Like Her · Abonnements</span>
+          <h1 className="abos-hero-title">Des formules <span>pour toutes</span></h1>
+          <div className="sv-hero-stats">
+            <div><strong>4</strong><span>formules disponibles</span></div>
+            <div><strong>0</strong><span>engagement requis</span></div>
+            <div><strong>−20%</strong><span>en annuel</span></div>
           </div>
         </div>
       </section>
@@ -173,9 +361,21 @@ export default function Abonnements() {
               {payError}
             </div>
           )}
+          <div className="abos-toggle-wrap abos-toggle-center">
+            <span className={!annual ? 'abos-toggle-label active' : 'abos-toggle-label'}>Mensuel</span>
+            <button className={`abos-toggle-btn ${annual ? 'on' : ''}`} onClick={() => setAnnual(!annual)}>
+              <span className="abos-toggle-knob" />
+            </button>
+            <span className={annual ? 'abos-toggle-label active' : 'abos-toggle-label'}>
+              Annuel <span className="abos-saving">−20%</span>
+            </span>
+          </div>
           <div className="plans-grid-full">
             {plans.map((p, i) => (
-              <PlanCard key={p.id} plan={p} index={i} annual={annual} planIcon={planIcons[i]} onPay={handlePay} paying={paying} />
+              <PlanCard
+                key={p.id} plan={p} index={i} annual={annual}
+                planIcon={planIcons[i]} onPay={handleOpenModal} paying={paying}
+              />
             ))}
           </div>
 
@@ -222,7 +422,7 @@ export default function Abonnements() {
               <span className="tag">FAQ</span>
               <h2 className="section-title">Questions <span className="pink-text">fréquentes</span></h2>
               <p className="faq-sub">Tu as d'autres questions ? Notre équipe est disponible 7j/7.</p>
-              <Link to="#inscription" className="btn-primary faq-cta">Nous contacter</Link>
+              <Link to="/contact" className="btn-primary faq-cta">Nous contacter</Link>
             </div>
             <div className="faq-list">
               {faqs.map((f, i) => (
@@ -240,9 +440,6 @@ export default function Abonnements() {
           </div>
         </div>
       </section>
-
-      {/* ── FORMULAIRE ── */}
-      
 
     </main>
   )

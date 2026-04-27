@@ -34,7 +34,15 @@
   transition: transform 0.3s, box-shadow 0.3s;
 }
 .stats-kpi:hover { transform: translateY(-4px); box-shadow: 0 12px 40px rgba(233,30,140,0.12); }
-.stats-kpi-icon { font-size: 2rem; flex-shrink: 0; }
+.stats-kpi-icon {
+  width: 52px; height: 52px; border-radius: 14px; flex-shrink: 0;
+  background: color-mix(in srgb, var(--kc) 12%, transparent);
+  border: 1px solid color-mix(in srgb, var(--kc) 22%, transparent);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--kc); transition: transform 0.25s;
+}
+.stats-kpi:hover .stats-kpi-icon { transform: rotate(-6deg) scale(1.08); }
+.stats-kpi-icon svg { width: 22px; height: 22px; stroke: var(--kc); }
 .stats-kpi-body { display: flex; flex-direction: column; gap: 0.2rem; }
 .stats-kpi-val { font-size: 1.5rem; font-weight: 900; color: var(--kc); line-height: 1; }
 .stats-kpi-label { font-size: 0.75rem; color: var(--text-muted); font-weight: 500; }

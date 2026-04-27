@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { admin } from '../services/api'
+import * as XLSX from 'xlsx'
 import './AdminPages.css'
 
 const ROLE_COLORS = { admin: 'adm-badge-pink', coach: 'adm-badge-purple', membre: 'adm-badge-gray' }
@@ -52,6 +53,22 @@ export default function AdminUtilisateurs() {
   const handleSearch = (e) => { setSearch(e.target.value); load(1, e.target.value, role) }
   const handleRole   = (e) => { setRole(e.target.value);  load(1, search, e.target.value) }
 
+  function exportExcel() {
+    const rows = list.map(u => ({
+      'Prénom':           u.prenom ?? '',
+      'Nom':              u.name ?? '',
+      'Email':            u.email ?? '',
+      'Téléphone':        u.telephone ?? '',
+      'Rôle':             u.role ?? '',
+      'Abonnement actif': u.inscription_active?.abonnement?.nom ?? 'Aucun',
+      'Inscrit le':       u.created_at ? new Date(u.created_at).toLocaleDateString('fr-FR') : '',
+    }))
+    const ws = XLSX.utils.json_to_sheet(rows)
+    const wb = XLSX.utils.book_new()
+    XLSX.utils.book_append_sheet(wb, ws, 'Utilisateurs')
+    XLSX.writeFile(wb, 'utilisateurs.xlsx')
+  }
+
   return (
     <div className="adm-page">
       <div className="adm-page-header">
@@ -63,6 +80,10 @@ export default function AdminUtilisateurs() {
         <div className="adm-section-head">
           <h2 className="adm-section-title">Utilisateurs ({meta?.total ?? list.length})</h2>
           <div className="adm-section-actions">
+            <button className="adm-export-btn adm-export-excel" onClick={exportExcel} disabled={list.length === 0}>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+              Excel
+            </button>
             <select className="adm-filter-select" value={role} onChange={handleRole}>
               <option value="">Tous les rôles</option>
               <option value="membre">Membres</option>

@@ -1,6 +1,8 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
+import Logo from '../components/Logo'
+import '../components/Logo.css'
 import './Login.css'
 
 export default function Login() {
@@ -46,16 +48,7 @@ export default function Login() {
         <div className="auth-panel-overlay" />
         <div className="auth-panel-content">
           <Link to="/" className="auth-brand">
-            <div className="auth-brand-icon">
-              <svg viewBox="0 0 40 40" fill="none">
-                <polygon points="20,4 36,34 4,34" fill="none" stroke="#e91e8c" strokeWidth="2.5"/>
-                <polygon points="20,12 30,28 10,28" fill="#e91e8c" opacity="0.85"/>
-              </svg>
-            </div>
-            <div>
-              <span className="auth-brand-name">MOVE LIKE HER</span>
-              <span className="auth-brand-tagline">Salle de sport · 100% féminin</span>
-            </div>
+            <Logo size={46} withText={true} />
           </Link>
           <div className="auth-panel-quote">
             <p>"Chaque séance te rapproche<br/>de la meilleure version de toi."</p>

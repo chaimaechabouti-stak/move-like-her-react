@@ -1,8 +1,11 @@
 import { useEffect, useState } from 'react'
 import { admin, salles as sallesApi } from '../services/api'
+import * as XLSX from 'xlsx'
+import jsPDF from 'jspdf'
+import autoTable from 'jspdf-autotable'
 import './AdminPages.css'
 
-const EMPTY = { name: '', prenom: '', email: '', password: '', specialite: '', salle_id: '', bio: '', experience_annees: 0, photo_url: '', active: true }
+const EMPTY = { name: '', prenom: '', email: '', password: '', specialite: '', ville: '', salle_id: '', bio: '', experience_annees: 0, photo_url: '', active: true }
 
 export default function AdminCoaches() {
   const [list, setList]       = useState([])
@@ -31,7 +34,8 @@ export default function AdminCoaches() {
     setForm({
       name: c.user?.name || '', prenom: c.user?.prenom || '',
       email: c.user?.email || '', password: '',
-      specialite: c.specialite || '', salle_id: c.salle_id || '',
+      specialite: c.specialite || '', ville: c.ville || '',
+      salle_id: c.salle_id || '',
       bio: c.bio || '', experience_annees: c.experience_annees || 0,
       photo_url: c.photo_url || '', active: !!c.active,
     })
@@ -60,6 +64,46 @@ export default function AdminCoaches() {
 
   const handleSearch = (e) => { setSearch(e.target.value); load(1, e.target.value) }
 
+  function exportExcel() {
+    const rows = list.map(c => ({
+      'Prénom':      c.user?.prenom ?? '',
+      'Nom':         c.user?.name ?? '',
+      'Email':       c.user?.email ?? '',
+      'Spécialité':  c.specialite ?? '',
+      'Ville':       c.ville ?? '',
+      'Salle':       c.salle?.nom ?? '',
+      'Expérience':  `${c.experience_annees ?? 0} ans`,
+      'Statut':      c.active ? 'Actif' : 'Inactif',
+    }))
+    const ws = XLSX.utils.json_to_sheet(rows)
+    const wb = XLSX.utils.book_new()
+    XLSX.utils.book_append_sheet(wb, ws, 'Coaches')
+    XLSX.writeFile(wb, 'coaches.xlsx')
+  }
+
+  function exportPDF() {
+    const doc = new jsPDF({ orientation: 'landscape' })
+    doc.setFontSize(16)
+    doc.text('Équipe Coaches — Move Like Her', 14, 15)
+    autoTable(doc, {
+      startY: 22,
+      head: [['Prénom', 'Nom', 'Email', 'Spécialité', 'Ville', 'Salle', 'Expérience', 'Statut']],
+      body: list.map(c => [
+        c.user?.prenom ?? '',
+        c.user?.name ?? '',
+        c.user?.email ?? '',
+        c.specialite ?? '',
+        c.ville ?? '',
+        c.salle?.nom ?? '',
+        `${c.experience_annees ?? 0} ans`,
+        c.active ? 'Actif' : 'Inactif',
+      ]),
+      styles: { fontSize: 8 },
+      headStyles: { fillColor: [233, 30, 140] },
+    })
+    doc.save('coaches.pdf')
+  }
+
   return (
     <div className="adm-page">
       <div className="adm-page-header">
@@ -86,7 +130,7 @@ export default function AdminCoaches() {
           {loading ? <div className="adm-empty">Chargement…</div> : (
             <table className="adm-table">
               <thead>
-                <tr><th>Coach</th><th>Spécialité</th><th>Salle</th><th>Expérience</th><th>Statut</th><th>Actions</th></tr>
+                <tr><th>Coach</th><th>Spécialité</th><th>Ville</th><th>Salle</th><th>Expérience</th><th>Statut</th><th>Actions</th></tr>
               </thead>
               <tbody>
                 {list.length === 0 && <tr><td colSpan={7}><div className="adm-empty">Aucun coach.</div></td></tr>}
@@ -108,6 +152,14 @@ export default function AdminCoaches() {
                     </td>
                     <td>
                       <span style={{ display: 'inline-block', background: '#f3e5f5', color: '#7b1fa2', border: '1px solid #ce93d8', borderRadius: 20, padding: '3px 10px', fontSize: '.72rem', fontWeight: 600 }}>{c.specialite}</span>
+                    </td>
+                    <td>
+                      {c.ville
+                        ? <span style={{ display: 'inline-flex', alignItems: 'center', gap: 4, fontSize: '.8rem', color: '#2d1a24' }}>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="#e91e8c" strokeWidth="1.7" style={{width:12,height:12}}><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
+                            {c.ville}
+                          </span>
+                        : <span style={{color:'#ccc'}}>—</span>}
                     </td>
                     <td>
                       {c.salle?.nom
@@ -175,9 +227,13 @@ export default function AdminCoaches() {
                     <input className="adm-input" type="password" value={form.password} onChange={e => set('password', e.target.value)} />
                   </div>
                 )}
-                <div className="adm-field adm-field-full">
+                <div className="adm-field">
                   <label className="adm-label">Spécialité *</label>
                   <input className="adm-input" value={form.specialite} onChange={e => set('specialite', e.target.value)} placeholder="Ex: Yoga, Pilates…" />
+                </div>
+                <div className="adm-field">
+                  <label className="adm-label">Ville</label>
+                  <input className="adm-input" value={form.ville} onChange={e => set('ville', e.target.value)} placeholder="Ex: Casablanca, Rabat…" />
                 </div>
                 <div className="adm-field">
                   <label className="adm-label">Salle</label>

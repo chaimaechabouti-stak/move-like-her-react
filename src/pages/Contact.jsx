@@ -45,17 +45,15 @@ export default function Contact() {
 
       {/* Hero */}
       <section className="contact-hero">
-        <div className="contact-hero-bg" />
         <div className="contact-hero-overlay" />
-        <div className="contact-hero-orb contact-orb-1" />
-        <div className="contact-hero-orb contact-orb-2" />
-        <div className="container contact-hero-content">
-          <span className="tag">Contact</span>
+        <div className="contact-hero-content container">
+          <span className="sv-tag">Move Like Her · Contact</span>
           <h1 className="page-title">Écris-nous</h1>
-          <p className="page-desc">
-            Une question sur nos abonnements, nos cours ou nos clubs ?<br />
-            Notre équipe te répond dans les 24h.
-          </p>
+          <div className="sv-hero-stats">
+            <div><strong>24h</strong><span>temps de réponse</span></div>
+            <div><strong>6</strong><span>clubs disponibles</span></div>
+            <div><strong>100%</strong><span>à votre écoute</span></div>
+          </div>
         </div>
       </section>
 
@@ -75,13 +73,13 @@ export default function Contact() {
                 {
                   icon: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 014.69 12 19.79 19.79 0 011.63 3.4 2 2 0 013.6 1.22h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L7.91 8.8a16 16 0 006 6l.91-.91a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>,
                   label: 'Téléphone',
-                  val: '+212 6XX XX XX XX',
+                  val: '+212 0559320244',
                   sub: 'Lun–Sam · 9h–19h',
                 },
                 {
                   icon: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>,
                   label: 'E-mail',
-                  val: 'hello@movelikeher.ma',
+                  val: 'Salles@movelikeher.ma',
                   sub: 'Réponse sous 24h',
                 },
                 {
@@ -148,7 +146,7 @@ export default function Contact() {
                   <div className="contact-field">
                     <label className="contact-label" htmlFor="c-nom">Nom complet *</label>
                     <input id="c-nom" type="text" className={`contact-input${errors.nom ? ' error' : ''}`}
-                      placeholder="Fatima Alaoui"
+                      placeholder="Votre Nom Complet"
                       value={form.nom} onChange={e => set('nom', e.target.value)}
                     />
                     {errors.nom && <p className="contact-error">{errors.nom}</p>}
@@ -156,7 +154,7 @@ export default function Contact() {
                   <div className="contact-field">
                     <label className="contact-label" htmlFor="c-email">E-mail *</label>
                     <input id="c-email" type="email" className={`contact-input${errors.email ? ' error' : ''}`}
-                      placeholder="ton@email.com"
+                      placeholder="Votre@email.com"
                       value={form.email} onChange={e => set('email', e.target.value)}
                     />
                     {errors.email && <p className="contact-error">{errors.email}</p>}

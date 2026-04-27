@@ -78,47 +78,28 @@ const steps = [
   },
 ]
 
-const team = [
-  {
-    name: 'Yasmine',
-    role: 'Coach Yoga & Bien-être',
-    exp: '5 ans',
-    courses: 'Yoga · Étirements · Méditation',
-    quote: 'Le yoga transforme le corps, mais surtout l\'esprit.',
-    certif: 'Diplômée BPJEPS',
-    img: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=400&q=80&fit=crop&crop=face',
-    color: '#f48fb1',
-  },
-  {
-    name: 'Sara',
-    role: 'Coach HIIT & Cardio',
-    exp: '7 ans',
-    courses: 'HIIT · Cardio Boxe · Full Body',
-    quote: 'Chaque séance est une victoire sur hier.',
-    certif: 'Certifiée CrossFit L2',
-    img: 'https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=400&q=80&fit=crop&crop=face',
-    color: '#e91e8c',
-  },
-  {
-    name: 'Nadia',
-    role: 'Coach Cross Training',
-    exp: '6 ans',
-    courses: 'Cross Training · CAF · Step',
-    quote: 'La force ne se donne pas, elle se construit.',
-    certif: 'Diplômée STAPS',
-    img: 'https://images.unsplash.com/photo-1567532939604-b6b5b0db2604?w=400&q=80&fit=crop&crop=face',
-    color: '#c2185b',
-  },
-  {
-    name: 'Layla',
-    role: 'Coach Nutrition & Coaching',
-    exp: '4 ans',
-    courses: 'Nutrition · Coaching perso · Bik\'in',
-    quote: 'Prendre soin de toi, c\'est un acte de courage.',
-    certif: 'Nutritionniste certifiée',
-    img: 'https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?w=400&q=80&fit=crop&crop=face',
-    color: '#f06292',
-  },
+const fallbackTeam = [
+  { id:'f1', name:'Yasmine', role:'Coach Yoga & Bien-être', exp:'5 ans', ville:'Casablanca',
+    courses:'Yoga · Étirements · Méditation', quote:'Le yoga transforme le corps, mais surtout l\'esprit.',
+    certif:'Diplômée BPJEPS', img:'https://tse1.mm.bing.net/th/id/OIP.gC3nYzdgMWu3TcqVnYdMngHaE8?pid=Api&h=220&P=0', color:'#f48fb1' },
+  { id:'f2', name:'Sara', role:'Coach HIIT & Cardio', exp:'7 ans', ville:'Rabat',
+    courses:'HIIT · Cardio Boxe · Full Body', quote:'Chaque séance est une victoire sur hier.',
+    certif:'Certifiée CrossFit L2', img:'https://tse2.mm.bing.net/th/id/OIP.NSnk2rAT7hITm2pcCegqYgHaHa?pid=Api&h=220&P=0', color:'#e91e8c' },
+  { id:'f3', name:'Nadia', role:'Coach Cross Training', exp:'6 ans', ville:'Marrakech',
+    courses:'Cross Training · CAF · Step', quote:'La force ne se donne pas, elle se construit.',
+    certif:'Diplômée STAPS', img:'https://tse1.mm.bing.net/th/id/OIP.6AEanFzonJiLfMWg1ygwKgHaF7?pid=Api&h=220&P=0', color:'#c2185b' },
+  { id:'f4', name:'Layla', role:'Coach Nutrition & Coaching', exp:'4 ans', ville:'Agadir',
+    courses:'Nutrition · Coaching perso · Bik\'in', quote:'Prendre soin de toi, c\'est un acte de courage.',
+    certif:'Nutritionniste certifiée', img:'https://tse3.mm.bing.net/th/id/OIP.9qF1U6-yNZFoYfEWPHCWVAHaE7?pid=Api&h=220&P=0', color:'#f06292' },
+  { id:'f5', name:'Imane', role:'Coach Step & Danse', exp:'4 ans', ville:'Fès',
+    courses:'Step · Zumba · Cardio Dance', quote:'Bouger avec joie, c\'est la meilleure médecine.',
+    certif:'Certifiée Zumba B1', img:'https://tse1.mm.bing.net/th/id/OIP.ynjMj3cu68ia2qfJ8i7XXAHaEo?pid=Api&h=220&P=0', color:'#e91e8c' },
+  { id:'f6', name:'Rania', role:'Coach CAF & Renforcement', exp:'5 ans', ville:'Tanger',
+    courses:'CAF · Abdos · Full Body', quote:'Ton corps est capable de bien plus que tu ne le crois.',
+    certif:'Diplômée STAPS', img:'https://tse3.mm.bing.net/th/id/OIP.dxvWVIaZPONkUhbmpdUKgwHaFb?pid=Api&h=220&P=0', color:'#c2185b' },
+  { id:'f7', name:'Salma', role:'Coach Bien-être & Étirements', exp:'3 ans', ville:'Tanger',
+    courses:'Étirements · Yoga · Méditation', quote:'La récupération est aussi importante que l\'effort.',
+    certif:'Certifiée Pilates', img:'https://tse1.mm.bing.net/th/id/OIP.gC3nYzdgMWu3TcqVnYdMngHaE8?pid=Api&h=220&P=0', color:'#f48fb1' },
 ]
 
 const testimonials = [
@@ -128,13 +109,13 @@ const testimonials = [
 ]
 
 export default function Coaching() {
-  const [team, setTeam] = useState([])
+  const [team, setTeam] = useState(fallbackTeam)
   const [loadingTeam, setLoadingTeam] = useState(true)
 
   useEffect(() => {
     coachesApi.list().then(data => {
       const arr = Array.isArray(data) ? data : (data.data ?? [])
-      setTeam(arr.filter(c => c.active !== false).map(c => ({
+      const apiTeam = arr.filter(c => c.active !== false).map(c => ({
         id:      c.id,
         name:    c.user?.prenom || c.user?.name || c.name || '',
         role:    c.specialite  || '',
@@ -144,7 +125,9 @@ export default function Coaching() {
         certif:  Array.isArray(c.certifications) ? c.certifications[0] : (c.certifications || ''),
         img:     c.photo_url || '',
         color:   '#e91e8c',
-      })))
+        ville:   c.ville || c.salle?.ville?.nom || c.salle?.nom || '',
+      }))
+      if (apiTeam.length > 0) setTeam(apiTeam)
     }).catch(() => {}).finally(() => setLoadingTeam(false))
   }, [])
 
@@ -153,22 +136,86 @@ export default function Coaching() {
 
       {/* ── HERO ── */}
       <section className="coaching-hero">
-        <div className="coaching-hero-bg" />
         <div className="coaching-hero-overlay" />
-        <div className="coaching-hero-orb coaching-hero-orb-1" />
-        <div className="coaching-hero-orb coaching-hero-orb-2" />
-        <div className="container coaching-hero-content">
-          <span className="tag">Coaching</span>
+        <div className="coaching-hero-content container">
+          <span className="sv-tag">Move Like Her · Coaching</span>
           <h1 className="coaching-hero-title">
-            Ton objectif,<br /><span className="pink-text">notre mission</span>
+            Ton objectif,<br /><span>notre mission</span>
           </h1>
-          <p className="coaching-hero-desc">
-            Des coaches certifiées qui t'accompagnent sur mesure.<br />
-            Parce que chaque femme est unique et mérite un suivi unique.
-          </p>
-          <div className="coaching-hero-actions">
-            <Link to="/abonnements" className="btn-primary">Démarrer mon coaching</Link>
-            <a href="#coaches" className="coaching-hero-ghost">Voir nos coaches ↓</a>
+          <div className="sv-hero-stats">
+            <div><strong>10+</strong><span>coaches certifiées</span></div>
+            <div><strong>100%</strong><span>personnalisé</span></div>
+            <div><strong>4</strong><span>types de coaching</span></div>
+          </div>
+        </div>
+      </section>
+
+      {/* ── COACHES ── */}
+      <section className="team-section" id="coaches">
+        <div className="container">
+          <div className="team-header">
+            <div>
+              <span className="tag">Notre équipe</span>
+              <h2 className="section-title" style={{ color: 'white' }}>Des coaches <span className="pink-text">passionnées</span></h2>
+            </div>
+            <p className="team-header-sub">Certifiées, expérimentées et surtout — elles t'attendent avec le sourire.</p>
+          </div>
+          <div className="team-grid-v2">
+            {loadingTeam
+              ? <SkeletonGrid count={7} height={380} />
+              : team.map(m => (
+              <div key={m.id || m.name} className="team-card-v2">
+                <div className="tcv2-photo-wrap">
+                  {m.img
+                    ? <img src={m.img} alt={m.name} className="tcv2-photo" />
+                    : <div className="tcv2-photo tcv2-photo-placeholder" style={{ background: `linear-gradient(135deg, ${m.color}, ${m.color}99)`, display:'flex', alignItems:'center', justifyContent:'center', fontSize:'2rem', color:'white', fontWeight:800 }}>{m.name?.[0]}</div>
+                  }
+                  <div className="tcv2-photo-overlay" style={{ background: `linear-gradient(to top, ${m.color}cc, transparent)` }} />
+                  <div className="tcv2-exp-badge">
+                    <span>{m.exp}</span>
+                    <small>exp.</small>
+                  </div>
+                </div>
+                <div className="tcv2-body">
+                  <div className="tcv2-top">
+                    <div>
+                      <h3 className="tcv2-name">{m.name}</h3>
+                      <p className="tcv2-role" style={{ color: m.color }}>{m.role}</p>
+                      {m.ville && (
+                        <span className="tcv2-ville">
+                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                            <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/>
+                            <circle cx="12" cy="9" r="2.5"/>
+                          </svg>
+                          {m.ville}
+                        </span>
+                      )}
+                    </div>
+                    <span className="tcv2-certif">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                        <polyline points="9 12 11 14 15 10"/>
+                      </svg>
+                      {m.certif}
+                    </span>
+                  </div>
+                  <blockquote className="tcv2-quote">"{m.quote}"</blockquote>
+                  <div className="tcv2-courses">
+                    {(m.courses || '').split(' · ').filter(Boolean).map(c => (
+                      <span key={c} className="tcv2-course-pill">{c}</span>
+                    ))}
+                  </div>
+                  <Link
+                    to="/abonnements"
+                    className="tcv2-book-btn"
+                    style={{ background: `linear-gradient(135deg, ${m.color}, ${m.color}cc)` }}
+                  >
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                    Réserver une séance
+                  </Link>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </section>
@@ -230,67 +277,6 @@ export default function Coaching() {
                     </svg>
                   </div>
                 )}
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ── COACHES ── */}
-      <section className="team-section" id="coaches">
-        <div className="container">
-          <div className="team-header">
-            <div>
-              <span className="tag">Notre équipe</span>
-              <h2 className="section-title" style={{ color: 'white' }}>Des coaches <span className="pink-text">passionnées</span></h2>
-            </div>
-            <p className="team-header-sub">Certifiées, expérimentées et surtout — elles t'attendent avec le sourire.</p>
-          </div>
-          <div className="team-grid-v2">
-            {loadingTeam
-              ? <SkeletonGrid count={4} height={380} />
-              : team.map(m => (
-              <div key={m.id || m.name} className="team-card-v2">
-                <div className="tcv2-photo-wrap">
-                  {m.img
-                    ? <img src={m.img} alt={m.name} className="tcv2-photo" />
-                    : <div className="tcv2-photo tcv2-photo-placeholder" style={{ background: `linear-gradient(135deg, ${m.color}, ${m.color}99)`, display:'flex', alignItems:'center', justifyContent:'center', fontSize:'2rem', color:'white', fontWeight:800 }}>{m.name?.[0]}</div>
-                  }
-                  <div className="tcv2-photo-overlay" style={{ background: `linear-gradient(to top, ${m.color}cc, transparent)` }} />
-                  <div className="tcv2-exp-badge">
-                    <span>{m.exp}</span>
-                    <small>exp.</small>
-                  </div>
-                </div>
-                <div className="tcv2-body">
-                  <div className="tcv2-top">
-                    <div>
-                      <h3 className="tcv2-name">{m.name}</h3>
-                      <p className="tcv2-role" style={{ color: m.color }}>{m.role}</p>
-                    </div>
-                    <span className="tcv2-certif">
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-                        <polyline points="9 12 11 14 15 10"/>
-                      </svg>
-                      {m.certif}
-                    </span>
-                  </div>
-                  <blockquote className="tcv2-quote">"{m.quote}"</blockquote>
-                  <div className="tcv2-courses">
-                    {(m.courses || '').split(' · ').filter(Boolean).map(c => (
-                      <span key={c} className="tcv2-course-pill">{c}</span>
-                    ))}
-                  </div>
-                  <Link
-                    to="/abonnements"
-                    className="tcv2-book-btn"
-                    style={{ background: `linear-gradient(135deg, ${m.color}, ${m.color}cc)` }}
-                  >
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-                    Réserver une séance
-                  </Link>
-                </div>
               </div>
             ))}
           </div>
